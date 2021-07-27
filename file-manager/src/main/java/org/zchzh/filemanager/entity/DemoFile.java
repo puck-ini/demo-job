@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.zchzh.filemanager.type.FileType;
 
 import javax.persistence.*;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +32,9 @@ public class DemoFile extends BaseEntity {
 
     private Long size;
 
+    @Transient
+    private InputStream inputStream;
+
     @Enumerated(EnumType.STRING)
     private FileType fileType;
 
@@ -52,6 +56,13 @@ public class DemoFile extends BaseEntity {
             }
         }
         return size;
+    }
+
+    public InputStream getInputStream() {
+        if (fileType == FileType.CATALOG) {
+            return null;
+        }
+        return inputStream;
     }
 
 }
