@@ -1,13 +1,20 @@
 package org.zchzh.filemanager.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 import org.zchzh.filemanager.type.FileType;
 
 import javax.persistence.*;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -18,6 +25,8 @@ import java.util.UUID;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
+@Slf4j
+@NoArgsConstructor
 public class DemoFile extends BaseEntity {
 
     @Id
@@ -32,6 +41,7 @@ public class DemoFile extends BaseEntity {
 
     private Long size;
 
+    @JsonIgnore
     @Transient
     private InputStream inputStream;
 
@@ -42,6 +52,30 @@ public class DemoFile extends BaseEntity {
     @JoinColumn(name = "parent_id", foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
     private List<DemoFile> children;
 
+    public DemoFile(MultipartFile file) {
+        fileName = UUID.randomUUID().toString();
+        originName = file.getOriginalFilename();
+        if (originName != null) {
+            suffix = originName.substring(originName.lastIndexOf(".") + 1);
+        }
+        size = file.getSize();
+        try {
+            inputStream = file.getInputStream();
+        } catch (IOException e) {
+            log.error("MultipartFile getInputStream error", e);
+        }
+        fileType = FileType.FILE;
+        children = null;
+    }
+
+    public static DemoFile newCatalog(String fileName) {
+        DemoFile demoFile = new DemoFile();
+        demoFile.setFileName(fileName);
+        demoFile.setFileType(FileType.CATALOG);
+        demoFile.setChildren(new ArrayList<>());
+        return demoFile;
+    }
+
     public String getFullFileName() {
         if (fileType == FileType.CATALOG) {
             return fileName;
@@ -49,14 +83,14 @@ public class DemoFile extends BaseEntity {
         return fileName + "." + suffix;
     }
 
-    public synchronized Long getSize() {
-        if (fileType == FileType.CATALOG) {
-            for (DemoFile file : children) {
-                size = size + file.getSize();
-            }
-        }
-        return size;
-    }
+//    public synchronized Long getSize() {
+//        if (fileType == FileType.CATALOG) {
+//            for (DemoFile file : children) {
+//                size = (size == null ? 0 : size) + file.getSize();
+//            }
+//        }
+//        return size;
+//    }
 
     public InputStream getInputStream() {
         if (fileType == FileType.CATALOG) {

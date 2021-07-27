@@ -3,6 +3,7 @@ package org.zchzh.filemanager.entity;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,7 +13,7 @@ import java.util.Date;
 
 @ToString
 @MappedSuperclass
-public class BaseEntity {
+public class BaseEntity implements Serializable {
 
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -7,11 +7,15 @@ spring:
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   data:
     mongodb:
       host: 127.0.0.1
       port: 27017
+      database: test
 #      authentication-database: admin
 #      username: admin
 #      password: admin
+server:
+  port: 9091
+
