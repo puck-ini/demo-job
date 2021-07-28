@@ -8,14 +8,23 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-  data:
-    mongodb:
-      host: 127.0.0.1
-      port: 27017
-      database: test
+#  data:
+#    mongodb:
+#      host: 127.0.0.1
+#      port: 27017
+#      database: test
 #      authentication-database: admin
 #      username: admin
 #      password: admin
 server:
   port: 9091
+
+file:
+  storage:
+    type: mongo
+    url: 127.0.0.1:27017
+#    username: minioadmin
+#    password: minioadmin
+    database: test
+#    authentication-db: admin
 

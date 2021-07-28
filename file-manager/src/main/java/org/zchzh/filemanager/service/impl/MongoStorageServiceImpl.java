@@ -21,14 +21,19 @@ import java.util.Objects;
  * @date 2021/7/27
  */
 @Slf4j
-@Service
+//@Service
 public class MongoStorageServiceImpl implements StorageService {
 
-    @Autowired
-    private GridFsTemplate gridFsTemplate;
+//    @Autowired
+    private final GridFsTemplate gridFsTemplate;
 
-    @Autowired
-    private GridFSBucket gridFSBucket;
+//    @Autowired
+    private final GridFSBucket gridFsBucket;
+
+    public MongoStorageServiceImpl(GridFsTemplate gridFsTemplate, GridFSBucket gridFsBucket) {
+        this.gridFsTemplate = gridFsTemplate;
+        this.gridFsBucket = gridFsBucket;
+    }
 
     @Override
     public void upload(String fileName, InputStream is) {
@@ -41,7 +46,7 @@ public class MongoStorageServiceImpl implements StorageService {
         GridFSFile fsFile = gridFsTemplate.findOne(query);
         InputStream is = null;
         if (Objects.nonNull(fsFile)) {
-            GridFSDownloadStream fsDownloadStream = gridFSBucket.openDownloadStream(fsFile.getObjectId());
+            GridFSDownloadStream fsDownloadStream = gridFsBucket.openDownloadStream(fsFile.getObjectId());
             GridFsResource resource = new GridFsResource(fsFile, fsDownloadStream);
             try {
                 is = resource.getInputStream();
