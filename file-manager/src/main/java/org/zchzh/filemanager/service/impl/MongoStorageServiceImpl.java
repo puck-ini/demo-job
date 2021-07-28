@@ -21,13 +21,10 @@ import java.util.Objects;
  * @date 2021/7/27
  */
 @Slf4j
-//@Service
 public class MongoStorageServiceImpl implements StorageService {
 
-//    @Autowired
     private final GridFsTemplate gridFsTemplate;
 
-//    @Autowired
     private final GridFSBucket gridFsBucket;
 
     public MongoStorageServiceImpl(GridFsTemplate gridFsTemplate, GridFSBucket gridFsBucket) {
