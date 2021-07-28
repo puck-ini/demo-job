@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author zengchzh
@@ -61,17 +63,26 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public DemoFile upload(Long catalogId, MultipartFile file) {
-        return upload(new DemoFile(file), catalogId);
+        return upload(catalogId, new DemoFile(file));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public DemoFile upload(DemoFile file, Long catalogId) {
+    public DemoFile upload(Long catalogId, DemoFile file) {
         DemoFile demoFile = getCatalog(catalogId);
         demoFile.getChildren().add(file);
         demoFileRepo.save(demoFile);
         storageService.upload(file.getFullFileName(), file.getInputStream());
         return file;
+    }
+
+    @Override
+    public List<DemoFile> batchUpload(Long catalogId, MultipartFile[] files) {
+        List<DemoFile> demoFileList = new ArrayList<>();
+        for (MultipartFile file : files) {
+            demoFileList.add(upload(catalogId, file));
+        }
+        return demoFileList;
     }
 
     @Override

@@ -6,6 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.zchzh.filemanager.entity.DemoFile;
 import org.zchzh.filemanager.service.FileService;
 
+import java.util.List;
+
 /**
  * @author zengchzh
  * @date 2021/7/27
@@ -43,6 +45,12 @@ public class FileController {
     public DemoFile upload(@RequestParam("catalogId") Long id,
                            @RequestPart("file") MultipartFile file) {
         return fileService.upload(id, file);
+    }
+
+    @PostMapping("/batch/upload")
+    public List<DemoFile> batchUpload(@RequestParam("catalogId") Long id,
+                                      @RequestPart("file") MultipartFile[] files) {
+        return fileService.batchUpload(id, files);
     }
 
     @GetMapping("/download")
