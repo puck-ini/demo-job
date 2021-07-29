@@ -1,9 +1,11 @@
 package org.zchzh.filemanager.service.impl;
 
+import cn.hutool.core.util.ZipUtil;
 import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -16,10 +18,10 @@ import org.zchzh.filemanager.type.FileType;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URLEncoder;
+import java.nio.channels.ClosedChannelException;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +41,8 @@ public class FileServiceImpl implements FileService {
 
     @Resource
     private HttpServletResponse response;
+
+    private final String tempDir = System.getProperty("java.io.tmpdir");
 
 
     @Override
@@ -87,20 +91,76 @@ public class FileServiceImpl implements FileService {
 
     @Override
     public void download(Long id) {
-        DemoFile demoFile = getFile(id);
+        DemoFile demoFile = get(id);
+        if (demoFile.getFileType() == FileType.FILE) {
+            downloadFile(demoFile);
+        } else {
+            downloadCatalogByZip(demoFile);
+        }
+    }
+
+    private void downloadFile(DemoFile demoFile) {
         try {
-            String fileName = URLEncoder.encode(demoFile.getFileName(),"UTF-8");
+            String fileName = URLEncoder.encode(demoFile.getOriginName(),"UTF-8");
             response.setHeader("Access-Control-Expose-Headers","Content-Disposition");
             response.setHeader("Content-Disposition",
                     "attachment;filename=" + fileName + ";filename*=utf-8''" + fileName);
             @Cleanup OutputStream os = response.getOutputStream();
             //获取数据
-            @Cleanup InputStream inputStream = demoFile.getInputStream();
-            IOUtils.copy(inputStream,os);
+            @Cleanup InputStream is = demoFile.getInputStream();
+            IOUtils.copy(is,os);
             os.flush();
         } catch (IOException e) {
             log.error("download error", e);
         }
+    }
+
+//    @Value("${file.storage.database}")
+
+    /**
+     * 下载压缩包
+     */
+    private void downloadCatalogByZip(DemoFile demoFile) {
+        try {
+            persistFile(demoFile, tempDir);
+            String path = tempDir + demoFile.getFileName();
+            String downloadName = URLEncoder.encode(demoFile.getFileName()+ ".zip","UTF-8");
+            log.info(downloadName);
+            response.setHeader("Access-Control-Expose-Headers","Content-Disposition");
+            response.setHeader("Content-Disposition",
+                    "attachment;filename=" + downloadName + ";filename*=utf-8''" + downloadName);
+            @Cleanup OutputStream os = response.getOutputStream();
+            File zipFile = ZipUtil.zip(path);
+            @Cleanup InputStream is = new FileInputStream(zipFile);
+            IOUtils.copy(is,os);
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void persistFile(DemoFile demoFile, String path) throws IOException {
+        if (demoFile.getFileType() == FileType.CATALOG) {
+            String filePath = path + demoFile.getFileName() + File.separator;
+            File file = new File(filePath);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            for (DemoFile tempFile : demoFile.getChildren()) {
+                persistFile(tempFile, filePath);
+            }
+            return;
+        }
+        File file = new File(path + File.separator + demoFile.getOriginName());
+        if (file.exists()) {
+            file = new File(path + File.separator + demoFile.getOriginName() + "_" + demoFile.getFullFileName());
+        } else {
+            file.createNewFile();
+        }
+        @Cleanup FileChannel source = ((FileInputStream) storageService.getInputStream(demoFile.getFullFileName())).getChannel();
+        @Cleanup FileChannel target = new RandomAccessFile(file, "rw").getChannel();
+        source.transferTo(0, source.size(), target);
     }
 
     @Override

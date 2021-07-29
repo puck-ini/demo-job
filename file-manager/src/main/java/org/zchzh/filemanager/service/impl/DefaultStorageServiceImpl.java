@@ -45,7 +45,8 @@ public class DefaultStorageServiceImpl implements StorageService {
         if (!file.exists()) {
             throw new CommonException("文件不存在");
         }
-        try (FileInputStream fileInputStream = new FileInputStream(file)) {
+        try {
+            FileInputStream fileInputStream = new FileInputStream(file);
             return fileInputStream;
         } catch (IOException e) {
             e.printStackTrace();

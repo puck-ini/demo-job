@@ -23,8 +23,8 @@ spring:
 server:
   port: 9091
 
-#file:
-#  storage:
+file:
+  storage:
 #    type: mongo
 #    type: minio
 #    url: 127.0.0.1:27017
@@ -32,6 +32,6 @@ server:
 #    username: minioadmin
 #    password: minioadmin
 #    database: test
-#    database: C:\Users\zengchzh\Desktop\testFileChannel
+    database: C:\Users\zengchzh\Desktop\testFileChannel\
 #    authentication-db: admin
 
