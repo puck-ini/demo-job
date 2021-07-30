@@ -74,6 +74,11 @@ public class MongoConfig {
         return new SimpleMongoClientDatabaseFactory(mongoClient,
                 prop.getDatabase());
     }
+
+    @Bean
+    public MongoTemplate mongoTemplate(@Autowired MongoDatabaseFactory mongoDatabaseFactory) {
+        return new MongoTemplate(mongoDatabaseFactory);
+    }
     @Bean
     public GridFSBucket gridFsBucket(@Autowired MongoDatabaseFactory mongoDatabaseFactory) {
         MongoDatabase mongoDatabase = mongoDatabaseFactory.getMongoDatabase();

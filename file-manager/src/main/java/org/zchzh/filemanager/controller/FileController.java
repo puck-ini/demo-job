@@ -1,18 +1,23 @@
 package org.zchzh.filemanager.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.zchzh.filemanager.entity.DemoFile;
 import org.zchzh.filemanager.service.FileService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 /**
  * @author zengchzh
  * @date 2021/7/27
  */
 
+@Slf4j
 @RestController
 @RequestMapping("/file")
 public class FileController {
@@ -50,7 +55,25 @@ public class FileController {
     @PostMapping("/batch/upload")
     public List<DemoFile> batchUpload(@RequestParam("catalogId") Long id,
                                       @RequestPart("file") MultipartFile[] files) {
-        return fileService.batchUpload(id, files);
+        long start  = System.currentTimeMillis();
+        List<DemoFile> result = fileService.batchUpload(id, files);
+        log.info("cost : " + (System.currentTimeMillis() - start));
+        return result;
+    }
+
+    @Deprecated
+    @PostMapping("/async/upload")
+    public List<DemoFile> asyncUpload(@RequestParam("catalogId") Long id,
+                                      @RequestPart("file") MultipartFile[] files) {
+        long start  = System.currentTimeMillis();
+        List<CompletableFuture<DemoFile>> futureList = new ArrayList<>();
+        for (MultipartFile file : files) {
+            CompletableFuture<DemoFile> future = CompletableFuture.supplyAsync(() -> fileService.upload(id, file));
+            futureList.add(future);
+        }
+        List<DemoFile> result =futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
+        log.info("cost : " + (System.currentTimeMillis() - start));
+        return result;
     }
 
     @GetMapping("/download")

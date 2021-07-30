@@ -1,8 +1,8 @@
 spring:
   servlet:
     multipart:
-      max-file-size: 100MB
-      max-request-size: 500MB
+      max-file-size: 1000MB
+      max-request-size: 10000MB
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
@@ -32,6 +32,6 @@ file:
 #    username: minioadmin
 #    password: minioadmin
 #    database: test
-    database: C:\Users\zengchzh\Desktop\testFileChannel\
+    database: C:\Users\zengchzh\Desktop\testfile\
 #    authentication-db: admin
 

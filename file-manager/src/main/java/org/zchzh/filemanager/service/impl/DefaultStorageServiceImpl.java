@@ -46,8 +46,7 @@ public class DefaultStorageServiceImpl implements StorageService {
             throw new CommonException("文件不存在");
         }
         try {
-            FileInputStream fileInputStream = new FileInputStream(file);
-            return fileInputStream;
+            return new FileInputStream(file);
         } catch (IOException e) {
             e.printStackTrace();
             throw new CommonException("获取文件流失败");

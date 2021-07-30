@@ -17,6 +17,7 @@
 
     <modules>
         <module>file-manager</module>
+        <module>demo-rbac</module>
     </modules>
 
     <properties>
