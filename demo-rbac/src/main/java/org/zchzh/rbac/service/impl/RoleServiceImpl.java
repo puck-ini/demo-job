@@ -1,8 +1,7 @@
 package org.zchzh.rbac.service.impl;
 
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
-import org.zchzh.rbac.entity.Role;
+import org.zchzh.rbac.model.entity.Role;
 import org.zchzh.rbac.repository.RoleRepo;
 import org.zchzh.rbac.service.RoleService;
 

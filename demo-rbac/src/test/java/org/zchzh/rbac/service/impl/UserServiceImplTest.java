@@ -1,23 +1,18 @@
 package org.zchzh.rbac.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
-import org.zchzh.rbac.entity.MyUser;
-import org.zchzh.rbac.entity.Permission;
-import org.zchzh.rbac.entity.Role;
+import org.zchzh.rbac.model.entity.MyUser;
+import org.zchzh.rbac.model.entity.Permission;
+import org.zchzh.rbac.model.entity.Role;
 import org.zchzh.rbac.service.UserService;
 import org.zchzh.rbac.type.PermissionType;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @Slf4j

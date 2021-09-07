@@ -1,7 +1,6 @@
 package org.zchzh.rbac.service.impl;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.zchzh.rbac.entity.Permission;
+import org.zchzh.rbac.model.entity.Permission;
 import org.zchzh.rbac.repository.PermissionRepo;
 import org.zchzh.rbac.service.PermissionService;
 

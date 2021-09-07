@@ -32,6 +32,6 @@ file:
 #    username: minioadmin
 #    password: minioadmin
 #    database: test
-    database: C:\Users\zengchzh\Desktop\testfile\
+    database: D:\testdata\
 #    authentication-db: admin
 

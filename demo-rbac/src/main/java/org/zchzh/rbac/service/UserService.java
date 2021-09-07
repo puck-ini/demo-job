@@ -1,6 +1,6 @@
 package org.zchzh.rbac.service;
 
-import org.zchzh.rbac.entity.MyUser;
+import org.zchzh.rbac.model.entity.MyUser;
 
 /**
  * @author zengchzh

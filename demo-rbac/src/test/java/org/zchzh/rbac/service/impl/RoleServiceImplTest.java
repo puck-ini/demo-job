@@ -6,14 +6,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpMethod;
-import org.zchzh.rbac.entity.Permission;
-import org.zchzh.rbac.entity.Role;
+import org.zchzh.rbac.model.entity.Permission;
+import org.zchzh.rbac.model.entity.Role;
 import org.zchzh.rbac.service.RoleService;
 import org.zchzh.rbac.type.PermissionType;
 
 import java.util.stream.Collectors;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
 @SpringBootTest

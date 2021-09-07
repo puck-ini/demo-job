@@ -1,4 +1,4 @@
-package org.zchzh.rbac.entity;
+package org.zchzh.rbac.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

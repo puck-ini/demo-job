@@ -1,7 +1,7 @@
 package org.zchzh.rbac.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.zchzh.rbac.entity.Role;
+import org.zchzh.rbac.model.entity.Role;
 
 /**
  * @author zengchzh

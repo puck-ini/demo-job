@@ -1,6 +1,6 @@
 package org.zchzh.rbac.service;
 
-import org.zchzh.rbac.entity.Permission;
+import org.zchzh.rbac.model.entity.Permission;
 
 /**
  * @author zengchzh

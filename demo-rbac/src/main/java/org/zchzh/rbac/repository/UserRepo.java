@@ -1,7 +1,7 @@
 package org.zchzh.rbac.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.zchzh.rbac.entity.MyUser;
+import org.zchzh.rbac.model.entity.MyUser;
 
 /**
  * @author zengchzh
