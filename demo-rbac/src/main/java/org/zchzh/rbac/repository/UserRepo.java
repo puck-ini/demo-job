@@ -8,4 +8,6 @@ import org.zchzh.rbac.model.entity.MyUser;
  * @date 2021/7/30
  */
 public interface UserRepo extends JpaRepository<MyUser, Long> {
+
+    MyUser findByUsername(String username);
 }
