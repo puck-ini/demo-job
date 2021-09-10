@@ -2,6 +2,7 @@ package org.zchzh.rbac.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.zchzh.rbac.model.dto.LoginDTO;
 import org.zchzh.rbac.model.dto.UserDTO;
 import org.zchzh.rbac.model.request.LoginReq;
 import org.zchzh.rbac.model.request.RegisterReq;
@@ -22,7 +23,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/login")
-    public UserDTO login(@RequestBody LoginReq req, HttpServletRequest request) {
+    public LoginDTO login(@RequestBody LoginReq req, HttpServletRequest request) {
         return userService.login(req, request);
     }
 

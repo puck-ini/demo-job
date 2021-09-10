@@ -1,5 +1,6 @@
 package org.zchzh.rbac.service;
 
+import org.zchzh.rbac.model.dto.LoginDTO;
 import org.zchzh.rbac.model.dto.UserDTO;
 import org.zchzh.rbac.model.entity.MyUser;
 import org.zchzh.rbac.model.request.LoginReq;
@@ -19,8 +20,13 @@ public interface UserService extends BaseCrudService<MyUser, Long> {
      * @param request
      * @return 返回登录用户信息
      */
-    UserDTO login(LoginReq req, HttpServletRequest request);
+    LoginDTO login(LoginReq req, HttpServletRequest request);
 
+    /**
+     * 注册
+     * @param req 注册参数
+     * @return 返回注册的信息
+     */
     UserDTO register(RegisterReq req);
 
 }

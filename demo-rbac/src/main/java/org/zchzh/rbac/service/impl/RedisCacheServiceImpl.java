@@ -37,6 +37,7 @@ public class RedisCacheServiceImpl implements CacheService {
             set(key, 0);
         }
         redisTemplate.opsForValue().increment(key);
+        redisTemplate.expire(key, TIMEOUT, TimeUnit.SECONDS);
     }
 
 

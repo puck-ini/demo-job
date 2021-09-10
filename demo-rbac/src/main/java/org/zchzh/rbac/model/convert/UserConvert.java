@@ -3,6 +3,7 @@ package org.zchzh.rbac.model.convert;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.zchzh.rbac.model.dto.LoginDTO;
 import org.zchzh.rbac.model.dto.UserDTO;
 import org.zchzh.rbac.model.entity.MyUser;
 import org.zchzh.rbac.model.request.LoginReq;
@@ -22,6 +23,11 @@ public interface UserConvert {
     @Mapping(source = "userDetail.phone", target = "phone")
     @Mapping(source = "userDetail.mail", target = "mail")
     UserDTO toDto(MyUser user);
+
+    @Mapping(source = "userDetail.age", target = "age")
+    @Mapping(source = "userDetail.phone", target = "phone")
+    @Mapping(source = "userDetail.mail", target = "mail")
+    LoginDTO toLoginDto(MyUser user);
 
 
     MyUser toEntity(LoginReq req);
