@@ -23,7 +23,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/login")
-    public LoginDTO login(@RequestBody LoginReq req, HttpServletRequest request) {
+    public LoginDTO login(LoginReq req, HttpServletRequest request) {
         return userService.login(req, request);
     }
 
