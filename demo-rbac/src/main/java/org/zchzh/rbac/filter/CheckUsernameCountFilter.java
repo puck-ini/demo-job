@@ -14,7 +14,7 @@ import java.util.function.Supplier;
  * 计数
  */
 @Slf4j
-public class CheckUsernameCountFilter extends AbstractLoginFilter {
+public class CheckUsernameCountFilter extends BaseFilter<LoginContext> {
 
     private CacheService cacheService;
 
@@ -28,7 +28,7 @@ public class CheckUsernameCountFilter extends AbstractLoginFilter {
     }
 
     @Override
-    public void execute(LoginContext context, AbstractLoginFilter filter) {
+    public void execute(LoginContext context, BaseFilter<LoginContext> filter) {
         log.info(CheckUsernameCountFilter.class.getName());
         String key = context.getKeys().getUsername();
         Integer count = (Integer) Optional.ofNullable(cacheService.get(key)).orElseGet(new Supplier<Integer>() {
@@ -39,13 +39,13 @@ public class CheckUsernameCountFilter extends AbstractLoginFilter {
             }
         });
         if (count > LOGIN_NAME_FAIL_COUNT) {
-            whenFail(context);
+            onFail(context);
         }
         super.execute(context, filter);
     }
 
     @Override
-    public void whenFail(LoginContext context) {
+    public void onFail(LoginContext context) {
         throw new CommonException("登录限制");
     }
 }

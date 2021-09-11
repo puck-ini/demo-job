@@ -1,6 +1,7 @@
 package org.zchzh.rbac.model.request;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.context.ApplicationContext;
 import org.zchzh.rbac.model.event.LoginFailEvent;
 import org.zchzh.rbac.model.event.LoginSuccessEvent;
@@ -10,20 +11,15 @@ import org.zchzh.rbac.model.event.LoginSuccessEvent;
  * @date 2021/9/7
  */
 
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class LoginContext {
+public class LoginContext extends PipelineContext{
 
     private LoginReq req;
 
     private String reqIp;
 
-    private ApplicationContext context;
-
     private CacheKey keys;
-
-    private LoginSuccessEvent successEvent;
-
-    private LoginFailEvent failEvent;
 
     public LoginContext(LoginReq req, String reqIp, ApplicationContext context) {
         this.req = req;
@@ -32,14 +28,6 @@ public class LoginContext {
         this.keys = new CacheKey(this.req.getUsername(), this.reqIp);
         this.successEvent = new LoginSuccessEvent(this, req.getUsername(), reqIp, keys);
         this.failEvent = new LoginFailEvent(this, req.getUsername(), reqIp, keys);
-    }
-
-    public void publishSuccessEvent() {
-        context.publishEvent(successEvent);
-    }
-
-    public void publishFailEvent() {
-        context.publishEvent(failEvent);
     }
 
     public static class CacheKey {

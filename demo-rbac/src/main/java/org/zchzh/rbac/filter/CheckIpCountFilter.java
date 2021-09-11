@@ -13,7 +13,7 @@ import java.util.function.Supplier;
  * @date 2021/9/7
  */
 @Slf4j
-public class CheckIpCountFilter extends AbstractLoginFilter {
+public class CheckIpCountFilter extends BaseFilter<LoginContext> {
 
     private CacheService cacheService;
 
@@ -28,7 +28,7 @@ public class CheckIpCountFilter extends AbstractLoginFilter {
     }
 
     @Override
-    public void execute(LoginContext context, AbstractLoginFilter filter) {
+    public void execute(LoginContext context, BaseFilter<LoginContext> filter) {
         log.info(CheckIpCountFilter.class.getName());
         String key = context.getKeys().getUsernameIp();
         Integer count = (Integer) Optional.ofNullable(cacheService.get(key)).orElseGet(new Supplier<Integer>() {
@@ -39,13 +39,13 @@ public class CheckIpCountFilter extends AbstractLoginFilter {
             }
         });
         if (count > IP_FAIL_COUNT) {
-            whenFail(context);
+            onFail(context);
         }
         super.execute(context, filter);
     }
 
     @Override
-    public void whenFail(LoginContext context) {
+    public void onFail(LoginContext context) {
         throw new CommonException("ip登录限制");
     }
 }

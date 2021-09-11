@@ -16,22 +16,22 @@ import java.util.Objects;
  * @date 2021/9/7
  */
 @Slf4j
-public class DefaultFilter extends AbstractLoginFilter {
+public class CheckPwFilter extends BaseFilter<LoginContext> {
 
     private UserRepo userRepo;
 
-    public DefaultFilter(UserRepo userRepo) {
+    public CheckPwFilter(UserRepo userRepo) {
         this.userRepo = userRepo;
     }
 
     @Override
-    public void execute(LoginContext context, AbstractLoginFilter filter) {
-        log.info(DefaultFilter.class.getName());
+    public void execute(LoginContext context, BaseFilter<LoginContext> filter) {
+        log.info(CheckPwFilter.class.getName());
         LoginReq req = context.getReq();
         MyUser loginUser = UserConvert.INSTANCE.toEntity(req);
         MyUser user = userRepo.findByUsername(req.getUsername());
         if (!checkPw(loginUser, user)) {
-            whenFail(context);
+            onFail(context);
             throw new CommonException("用户名或密码错误");
         }
         super.execute(context, filter);

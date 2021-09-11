@@ -2,6 +2,7 @@ package org.zchzh.rbac.filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.zchzh.rbac.model.request.LoginContext;
 import org.zchzh.rbac.repository.UserRepo;
 import org.zchzh.rbac.service.CacheService;
 
@@ -11,7 +12,7 @@ import org.zchzh.rbac.service.CacheService;
  */
 
 @Component
-public class LoginFilterChain extends AbstractLoginChain {
+public class LoginFilterChain extends BaseChain<LoginContext> {
 
 
     @Autowired
@@ -19,7 +20,7 @@ public class LoginFilterChain extends AbstractLoginChain {
         super();
         addLast(new CheckUsernameCountFilter(cacheService));
         addLast(new CheckIpCountFilter(cacheService));
-        addLast(new DefaultFilter(userRepo));
+        addLast(new CheckPwFilter(userRepo));
 //        addFirst(new DefaultFilter(userRepo, cacheService));
 //        addFirst(new CheckIpCountFilter(cacheService));
 //        addFirst(new CheckUsernameCountFilter(cacheService));
