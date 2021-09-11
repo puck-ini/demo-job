@@ -9,7 +9,7 @@ import org.zchzh.rbac.model.convert.UserConvert;
 import org.zchzh.rbac.model.dto.LoginDTO;
 import org.zchzh.rbac.model.dto.UserDTO;
 import org.zchzh.rbac.model.entity.MyUser;
-import org.zchzh.rbac.model.request.LoginContext;
+import org.zchzh.rbac.model.context.LoginContext;
 import org.zchzh.rbac.model.request.LoginReq;
 import org.zchzh.rbac.model.request.RegisterReq;
 import org.zchzh.rbac.repository.UserRepo;

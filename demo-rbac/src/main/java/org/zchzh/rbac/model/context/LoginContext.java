@@ -1,10 +1,11 @@
-package org.zchzh.rbac.model.request;
+package org.zchzh.rbac.model.context;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.context.ApplicationContext;
 import org.zchzh.rbac.model.event.LoginFailEvent;
 import org.zchzh.rbac.model.event.LoginSuccessEvent;
+import org.zchzh.rbac.model.request.LoginReq;
 
 /**
  * @author zengchzh

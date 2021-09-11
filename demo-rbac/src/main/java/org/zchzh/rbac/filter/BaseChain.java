@@ -1,7 +1,6 @@
 package org.zchzh.rbac.filter;
 
-import org.zchzh.rbac.model.request.LoginContext;
-import org.zchzh.rbac.model.request.PipelineContext;
+import org.zchzh.rbac.model.context.PipelineContext;
 
 /**
  * @author zengchzh

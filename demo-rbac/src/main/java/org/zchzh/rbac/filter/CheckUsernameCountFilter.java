@@ -2,7 +2,7 @@ package org.zchzh.rbac.filter;
 
 import lombok.extern.slf4j.Slf4j;
 import org.zchzh.rbac.exception.CommonException;
-import org.zchzh.rbac.model.request.LoginContext;
+import org.zchzh.rbac.model.context.LoginContext;
 import org.zchzh.rbac.service.CacheService;
 
 import java.util.Optional;

@@ -2,7 +2,7 @@ package org.zchzh.rbac.filter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.zchzh.rbac.model.request.LoginContext;
+import org.zchzh.rbac.model.context.LoginContext;
 import org.zchzh.rbac.repository.UserRepo;
 import org.zchzh.rbac.service.CacheService;
 

@@ -1,4 +1,4 @@
-package org.zchzh.rbac.model.request;
+package org.zchzh.rbac.model.context;
 
 import lombok.Data;
 import lombok.ToString;

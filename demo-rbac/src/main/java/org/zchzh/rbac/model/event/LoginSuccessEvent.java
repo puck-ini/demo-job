@@ -1,9 +1,7 @@
 package org.zchzh.rbac.model.event;
 
-import lombok.Data;
 import org.springframework.context.ApplicationEvent;
-import org.zchzh.rbac.model.request.LoginContext;
-import org.zchzh.rbac.model.request.LoginReq;
+import org.zchzh.rbac.model.context.LoginContext;
 
 /**
  * @author zengchzh
