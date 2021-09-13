@@ -3,6 +3,7 @@ package org.zchzh.rbac.aop.aspect;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
@@ -32,6 +33,9 @@ public class PermissionHandler extends BaseMethodAdviceHandler<Object> {
     @Autowired
     private PermissionService permissionService;
 
+    @Value("${rbac.permission.enable}")
+    public boolean enable;
+
     private static List<String> whiteList = new ArrayList<>();
 
     static {
@@ -41,6 +45,9 @@ public class PermissionHandler extends BaseMethodAdviceHandler<Object> {
 
     @Override
     public boolean onBefore(ProceedingJoinPoint point) {
+        if (!enable) {
+            return true;
+        }
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         String url = request.getRequestURI();

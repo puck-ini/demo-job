@@ -34,3 +34,7 @@ spring:
     redis:
       repositories:
         enabled: false
+
+rbac:
+  permission:
+    enable: false

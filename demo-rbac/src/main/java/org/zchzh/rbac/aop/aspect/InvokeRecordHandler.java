@@ -2,7 +2,6 @@ package org.zchzh.rbac.aop.aspect;
 
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.http.useragent.UserAgentUtil;
-import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
@@ -16,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.zchzh.rbac.annotation.InvokeRecord;
 import org.zchzh.rbac.model.entity.LogEntity;
 import org.zchzh.rbac.model.event.LogEvent;
+import org.zchzh.rbac.util.JsonUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
@@ -44,8 +44,8 @@ public class InvokeRecordHandler extends BaseMethodAdviceHandler<Object> {
 
         log.warn("\n{} 执行结束，耗时={}ms，入参={}, 出参={}",
                 methodDesc, costTime,
-               JSONUtil.toJsonStr(args),
-                JSONUtil.toJsonStr(result));
+               JsonUtil.toJson(args),
+                JsonUtil.toJson(result));
 
 
         // 开始保存请求日志
@@ -62,7 +62,7 @@ public class InvokeRecordHandler extends BaseMethodAdviceHandler<Object> {
                         point.getSignature().getName()))
                 .httpMethod(request.getMethod())
                 .requestParams(getNameAndValue(point))
-                .result(JSONUtil.toJsonStr(result))
+                .result(JsonUtil.toJson(result))
                 .timeCost(System.currentTimeMillis() - startTime)
                 .userAgent(userAgent)
                 .browser(Objects.isNull(userAgent) ? null : UserAgentUtil.parse(userAgent).getBrowser().toString())
@@ -150,7 +150,7 @@ public class InvokeRecordHandler extends BaseMethodAdviceHandler<Object> {
         }
         String jsonResult = "unknown args";
         try {
-            jsonResult = JSONUtil.toJsonStr(map);
+            jsonResult = JsonUtil.toJson(map);
         } catch (Exception e) {
             log.error("部分参数无法序列化为json", e);
         }

@@ -1,10 +1,10 @@
 package org.zchzh.rbac.aop.aspect;
 
-import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.zchzh.rbac.util.JsonUtil;
 
 import java.lang.reflect.Method;
 
@@ -19,7 +19,7 @@ public abstract class BaseMethodAdviceHandler<R> implements MethodAdviceHandler<
     public void onThrow(ProceedingJoinPoint point, Throwable e) {
         String methodDesc = getMethodDesc(point);
         Object[] args = point.getArgs();
-        log.error("{} 执行时出错，入参={}", methodDesc, JSONUtil.toJsonStr(args), e);
+        log.error("{} 执行时出错，入参={}", methodDesc, JsonUtil.toJson(args), e);
     }
 
     /**
