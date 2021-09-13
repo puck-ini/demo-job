@@ -26,12 +26,12 @@ public abstract class BaseFilter<T extends PipelineContext> {
         filter.execute(context, filter.next);
     }
 
+    public void onSuccess(T context) {
+        context.publishSuccessEvent();
+    }
 
     public void onFail(T context) {
         context.publishFailEvent();
     }
 
-    public void onSuccess(T context) {
-        context.publishSuccessEvent();
-    }
 }
