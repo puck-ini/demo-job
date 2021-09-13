@@ -10,6 +10,7 @@ import org.zchzh.rbac.model.entity.Permission;
 import org.zchzh.rbac.model.entity.Role;
 import org.zchzh.rbac.service.RoleService;
 import org.zchzh.rbac.type.PermissionType;
+import org.zchzh.rbac.type.Url;
 
 import java.util.stream.Collectors;
 
@@ -33,10 +34,9 @@ class RoleServiceImplTest {
         Role role = Role.builder().name("test").description("e123").build();
         Permission permission = Permission.builder()
                 .description("test")
-                .method(HttpMethod.GET)
                 .name("test")
                 .type(PermissionType.BACK_END)
-                .url("test")
+                .url(new Url("/user/login", HttpMethod.GET))
                 .build();
         role.getPermissions().add(permission);
         roleService.create(role);

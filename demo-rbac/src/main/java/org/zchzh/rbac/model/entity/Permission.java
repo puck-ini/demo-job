@@ -3,6 +3,7 @@ package org.zchzh.rbac.model.entity;
 import lombok.*;
 import org.springframework.http.HttpMethod;
 import org.zchzh.rbac.type.PermissionType;
+import org.zchzh.rbac.type.Url;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -35,15 +36,17 @@ public class Permission extends BaseEntity{
      */
     @Enumerated(EnumType.ORDINAL)
     private PermissionType type;
-    /**
-     * 权限类型为前端页面时表示前端url，权限类型为后端接口时表示后端接口url
-     */
-    private String url;
-    /**
-     * 请求方式
-     */
-    @Enumerated(EnumType.ORDINAL)
-    private HttpMethod method;
+//    /**
+//     * 权限类型为前端页面时表示前端url，权限类型为后端接口时表示后端接口url
+//     */
+//    private String url;
+//    /**
+//     * 请求方式
+//     */
+//    @Enumerated(EnumType.ORDINAL)
+//    private HttpMethod method;
+
+    private Url url;
 //    /**
 //     * 父级权限id
 //     */

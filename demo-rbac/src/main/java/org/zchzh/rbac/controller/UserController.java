@@ -31,4 +31,10 @@ public class UserController {
     public UserDTO register(@RequestBody RegisterReq req) {
         return userService.register(req);
     }
+
+
+    @GetMapping("/test")
+    public void test() {
+
+    }
 }

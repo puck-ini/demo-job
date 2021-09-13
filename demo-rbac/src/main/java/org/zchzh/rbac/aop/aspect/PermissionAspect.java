@@ -5,23 +5,23 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-
 /**
  * @author zengchzh
- * @date 2021/9/10
+ * @date 2021/9/13
  */
-@Aspect
-@Order(1)
-@Component
-public class InvokeRecordAspect extends BaseMethodAspect {
 
+@Aspect
+@Component
+public class PermissionAspect extends BaseMethodAspect {
+
+
+    @Pointcut("execution(public * org.zchzh.rbac.controller..*.*(..))")
     @Override
-    @Pointcut("@annotation(org.zchzh.rbac.annotation.InvokeRecord) || execution(public * org.zchzh.rbac.controller..*.*(..))")
     protected void pointcut() {
     }
 
     @Override
     protected Class<? extends MethodAdviceHandler<?>> getAdviceHandlerType() {
-        return InvokeRecordHandler.class;
+        return PermissionHandler.class;
     }
 }

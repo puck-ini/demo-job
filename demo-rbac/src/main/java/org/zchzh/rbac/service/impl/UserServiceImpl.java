@@ -30,22 +30,9 @@ public class UserServiceImpl extends AbstractCrudService<MyUser, Long> implement
 
     private final UserRepo userRepo;
 
-    private final CacheService cacheService;
-
-    /**
-     * 登录名限制次数
-     */
-    private static final int LOGIN_NAME_FAIL_COUNT = 20;
-
-    /**
-     * ip 限制次数
-     */
-    private static final int IP_FAIL_COUNT = 10;
-
-    protected UserServiceImpl(UserRepo repo, CacheService cacheService) {
+    protected UserServiceImpl(UserRepo repo) {
         super(repo);
         this.userRepo = repo;
-        this.cacheService = cacheService;
     }
 
 
@@ -71,7 +58,4 @@ public class UserServiceImpl extends AbstractCrudService<MyUser, Long> implement
         user.setPassword(BCrypt.hashpw(user.getPassword()));
         return UserConvert.INSTANCE.toDto(userRepo.saveAndFlush(user));
     }
-
-
-
 }

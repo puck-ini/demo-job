@@ -15,6 +15,7 @@ import org.zchzh.rbac.model.request.LoginReq;
 import org.zchzh.rbac.model.request.RegisterReq;
 import org.zchzh.rbac.service.UserService;
 import org.zchzh.rbac.type.PermissionType;
+import org.zchzh.rbac.type.Url;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -47,10 +48,9 @@ class UserServiceImplTest {
         Role role = Role.builder().name("test").description("e123").build();
         Permission permission = Permission.builder()
                 .description("test")
-                .method(HttpMethod.GET)
                 .name("test")
                 .type(PermissionType.BACK_END)
-                .url("test")
+                .url(new Url("/user/login", HttpMethod.GET))
                 .build();
         role.getPermissions().add(permission);
         user.getRoles().add(role);
@@ -62,10 +62,9 @@ class UserServiceImplTest {
         Role role = Role.builder().name("test").description("e123").build();
         Permission permission = Permission.builder()
                 .description("test")
-                .method(HttpMethod.GET)
                 .name("test")
                 .type(PermissionType.BACK_END)
-                .url("test")
+                .url(new Url("/user/login", HttpMethod.GET))
                 .build();
         role.getPermissions().add(permission);
         List<MyUser> myUsers = userService.list();
