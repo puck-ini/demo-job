@@ -7,15 +7,13 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.multipart.MultipartFile;
 import org.zchzh.filemanager.type.FileType;
+import org.zchzh.filemanager.util.MD5Util;
 
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author zengchzh
@@ -40,6 +38,8 @@ public class DemoFile extends BaseEntity {
     private String originName;
 
     private Long size;
+
+    private String md5;
 
     @JsonIgnore
     @Transient
@@ -66,6 +66,11 @@ public class DemoFile extends BaseEntity {
         }
         fileType = FileType.FILE;
         children = null;
+        try {
+            md5 = MD5Util.getMd5(file.getInputStream());
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+        }
     }
 
     public static DemoFile newCatalog(String fileName) {
