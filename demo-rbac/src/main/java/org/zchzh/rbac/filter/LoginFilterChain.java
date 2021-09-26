@@ -19,7 +19,7 @@ import java.util.Map;
 @Component
 public class LoginFilterChain /*extends FilterChain<LoginContext>*/ {
 
-    private static final Map<Class<?>, FilterChain> MAP = new HashMap<>();
+    private static final Map<Class<? extends PipelineContext>, FilterChain> MAP = new HashMap<>();
 
     @Autowired
     public LoginFilterChain(UserRepo userRepo, CacheService cacheService) {

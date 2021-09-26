@@ -15,6 +15,7 @@ import java.util.Date;
 @ToString
 public class LoginDTO implements Serializable {
 
+    private static final long serialVersionUID = -4672997795915244784L;
     private String username;
 
     private String name;

@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginReq implements Serializable {
+public class LoginReq {
 
     private String username;
 

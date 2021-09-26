@@ -13,6 +13,7 @@ import java.util.Date;
 @Data
 public class UserDTO implements Serializable {
 
+    private static final long serialVersionUID = 2423765515134605549L;
     private String username;
 
     private String name;

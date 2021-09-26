@@ -22,8 +22,11 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private HttpServletRequest request;
+
     @GetMapping("/login")
-    public LoginDTO login(LoginReq req, HttpServletRequest request) {
+    public LoginDTO login(LoginReq req) {
         return userService.login(req, request);
     }
 

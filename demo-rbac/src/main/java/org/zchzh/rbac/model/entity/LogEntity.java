@@ -19,6 +19,7 @@ import javax.persistence.Transient;
 @ToString
 public class LogEntity extends BaseEntity {
 
+    private static final long serialVersionUID = 6008093151196967049L;
     /**
      * 线程id
      */

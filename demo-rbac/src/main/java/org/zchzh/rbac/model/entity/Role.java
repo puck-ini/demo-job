@@ -1,5 +1,6 @@
 package org.zchzh.rbac.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -19,11 +20,13 @@ import java.util.List;
 @AllArgsConstructor
 public class Role extends BaseEntity{
 
+    private static final long serialVersionUID = -758230998840266577L;
 
     private String name;
 
     private String description;
 
+    @JsonIgnore
     @Builder.Default
     @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL, targetEntity = MyUser.class)

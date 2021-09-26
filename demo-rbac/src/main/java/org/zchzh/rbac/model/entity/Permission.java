@@ -1,5 +1,6 @@
 package org.zchzh.rbac.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.http.HttpMethod;
 import org.zchzh.rbac.type.PermissionType;
@@ -23,6 +24,7 @@ import java.util.List;
 public class Permission extends BaseEntity{
 
 
+    private static final long serialVersionUID = 5098781407648716098L;
     /**
      * 权限名
      */
@@ -52,6 +54,7 @@ public class Permission extends BaseEntity{
 //     */
 //    private Long parentId;
 
+    @JsonIgnore
     @Builder.Default
     @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL, targetEntity = Role.class)

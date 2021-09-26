@@ -11,6 +11,7 @@ import java.io.Serializable;
 @Data
 public class ResultDTO<T> implements Serializable {
 
+    private static final long serialVersionUID = -1579595367668795621L;
     private String code;
 
     private String msg;

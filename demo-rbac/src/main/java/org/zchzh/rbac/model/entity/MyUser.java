@@ -19,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class MyUser extends BaseEntity{
 
+    private static final long serialVersionUID = 5610655145613570489L;
     private String username;
 
     private String password;
