@@ -3,6 +3,7 @@ package org.zchzh.storage.config;
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -19,9 +20,10 @@ import org.zchzh.storage.type.StorageType;
  * @date 2021/7/27
  */
 
+@Slf4j
 @Configuration
 @ConditionOnStorageType(value = StorageType.MINIO)
-@ConditionalOnMissingBean
+@ConditionalOnMissingBean(MinioConfig.class)
 public class MinioConfig {
 
 
@@ -45,6 +47,7 @@ public class MinioConfig {
     @Bean
     public StorageService storageService(@Autowired MinioClient minioClient,
                                          @Autowired MinioProp prop) {
+        log.info("storage service : " + StorageType.MINIO);
         return new MinioStorageServiceImpl(minioClient, prop);
     }
 }

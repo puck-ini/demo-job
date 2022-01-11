@@ -8,6 +8,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
@@ -32,9 +33,10 @@ import java.util.Objects;
  * @date 2021/7/27
  */
 
+@Slf4j
 @Configuration
 @ConditionOnStorageType(value = StorageType.MONGODB)
-@ConditionalOnMissingBean
+@ConditionalOnMissingBean(MongoConfig.class)
 public class MongoConfig {
 
 
@@ -91,6 +93,7 @@ public class MongoConfig {
     @Bean
     public StorageService storageService(@Autowired GridFsTemplate gridFsTemplate,
                                          @Autowired GridFSBucket gridFsBucket) {
+        log.info("storage service : " + StorageType.MONGODB);
         return new MongoStorageServiceImpl(gridFsTemplate, gridFsBucket);
     }
 }

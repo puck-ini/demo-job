@@ -25,6 +25,7 @@ server:
 
 file:
   storage:
-    type: default
+    type: mongodb
+    path: classpath:mongodb.yml
 
 

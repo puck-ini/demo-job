@@ -13,7 +13,13 @@ import org.zchzh.storage.type.StorageType;
 @ConfigurationProperties(prefix = "file.storage")
 public class StorageProp {
 
+    /**
+     * 存储类型
+     */
     private StorageType type = StorageType.DEFAULT;
 
-    private String path = type.getPath();
+    /**
+     * 存储服务配置文件路径
+     */
+    private String path;
 }

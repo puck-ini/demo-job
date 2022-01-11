@@ -15,6 +15,7 @@ import org.zchzh.storage.type.StorageType;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * @author zengchzh
@@ -31,19 +32,19 @@ public class PropAutoConfig {
     @Bean
     @ConditionOnStorageType(value = StorageType.DEFAULT)
     public DefaultProp defaultProp(StorageProp prop) {
-        return load(prop.getPath(), DefaultProp.class);
+        return load(Objects.isNull(prop.getPath()) ? StorageType.DEFAULT.getPath() : prop.getPath(), DefaultProp.class);
     }
 
     @Bean
     @ConditionOnStorageType(value = StorageType.MINIO)
     public MinioProp minioProp(StorageProp prop) {
-        return load(prop.getPath(), MinioProp.class);
+        return load(Objects.isNull(prop.getPath()) ? StorageType.MINIO.getPath() : prop.getPath(), MinioProp.class);
     }
 
     @Bean
     @ConditionOnStorageType(value = StorageType.MONGODB)
     public MongoProp mongoProp(StorageProp prop) {
-        return load(prop.getPath(), MongoProp.class);
+        return load(Objects.isNull(prop.getPath()) ? StorageType.MONGODB.getPath() : prop.getPath(), MongoProp.class);
     }
 
 
