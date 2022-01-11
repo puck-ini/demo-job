@@ -1,7 +1,8 @@
-package org.zchzh.file.service.impl;
+package org.zchzh.storage.service.impl;
 
-import org.zchzh.file.config.StorageProp;
-import org.zchzh.file.service.StorageService;
+import org.zchzh.storage.properties.MinioProp;
+import org.zchzh.storage.properties.StorageProp;
+import org.zchzh.storage.service.StorageService;
 import io.minio.GetObjectArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
@@ -17,9 +18,9 @@ public class MinioStorageServiceImpl implements StorageService {
 
     private final MinioClient minioClient;
 
-    private final StorageProp prop;
+    private final MinioProp prop;
 
-    public MinioStorageServiceImpl(MinioClient minioClient, StorageProp prop) {
+    public MinioStorageServiceImpl(MinioClient minioClient, MinioProp prop) {
         this.minioClient = minioClient;
         this.prop = prop;
     }
@@ -28,7 +29,7 @@ public class MinioStorageServiceImpl implements StorageService {
     public void upload(String fileName, InputStream is) {
         try {
             minioClient.putObject(PutObjectArgs.builder()
-                    .bucket(prop.getDatabase())
+                    .bucket(prop.getBucket())
                     .object(fileName)
                     .stream(is, is.available(), -1)
                     .build());
@@ -41,7 +42,7 @@ public class MinioStorageServiceImpl implements StorageService {
     public InputStream getInputStream(String fileName) {
         try {
             return minioClient.getObject(GetObjectArgs.builder()
-                    .bucket(prop.getDatabase())
+                    .bucket(prop.getBucket())
                     .object(fileName)
                     .build());
         } catch (Exception e) {

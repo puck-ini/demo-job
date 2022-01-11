@@ -1,1 +1,6 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=org.zchzh.storage.config.AutoConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  org.zchzh.storage.config.AutoConfig,\
+  org.zchzh.storage.config.PropAutoConfig,\
+  org.zchzh.storage.config.DefaultStorageConfig,\
+  org.zchzh.storage.config.MongoConfig,\
+  org.zchzh.storage.config.MinioConfig

@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.zchzh.file.entity.DemoFile;
 import org.zchzh.file.repository.DemoFileRepo;
 import org.zchzh.file.service.FileService;
-import org.zchzh.file.service.StorageService;
+import org.zchzh.storage.service.StorageService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;

@@ -1,8 +1,7 @@
-package org.zchzh.file.service.impl;
+package org.zchzh.storage.service.impl;
 
-import org.zchzh.file.config.StorageProp;
-import org.zchzh.file.exception.CommonException;
-import org.zchzh.file.service.StorageService;
+import org.zchzh.storage.properties.StorageProp;
+import org.zchzh.storage.service.StorageService;
 
 import java.io.*;
 import java.nio.channels.FileChannel;
@@ -16,9 +15,9 @@ public class DefaultStorageServiceImpl implements StorageService {
 
     private String path;
 
-    public DefaultStorageServiceImpl(StorageProp prop) {
-        if (Objects.nonNull(prop.getDatabase())) {
-            this.path = prop.getDatabase();
+    public DefaultStorageServiceImpl(String path) {
+        if (Objects.nonNull(path)) {
+            this.path = path;
         } else {
             this.path = System.getProperty("java.io.tmpdir");
         }
@@ -42,13 +41,13 @@ public class DefaultStorageServiceImpl implements StorageService {
     public InputStream getInputStream(String fileName) {
         File file = new File(path + fileName);
         if (!file.exists()) {
-            throw new CommonException("文件不存在");
+            throw new RuntimeException("文件不存在");
         }
         try {
             return new FileInputStream(file);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new CommonException("获取文件流失败");
+            throw new RuntimeException("获取文件流失败");
         }
     }
 }

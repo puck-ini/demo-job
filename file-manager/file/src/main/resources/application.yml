@@ -25,13 +25,6 @@ server:
 
 file:
   storage:
-#    type: mongo
-#    type: minio
-#    url: 127.0.0.1:27017
-#    url: 127.0.0.1:9000
-#    username: minioadmin
-#    password: minioadmin
-#    database: test
-    database: D:\testdata\
-#    authentication-db: admin
+    type: default
+
 

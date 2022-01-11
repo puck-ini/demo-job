@@ -1,6 +1,5 @@
 package org.zchzh.storage.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -10,8 +9,29 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AutoConfig {
 
-    @Bean
-    public StorageProp storageProp() {
-        return new StorageProp();
-    }
+
+//
+//    @Bean
+//    public StorageService storageService(@Autowired StorageProp prop) {
+//        return new DefaultStorageServiceImpl(prop);
+//    }
+//
+//    @Bean
+//
+//    public DefaultStorageConfig defaultStorageConfig() {
+//        return new DefaultStorageConfig();
+//    }
+//
+//    @Bean
+//    @ConditionalOnProperty(prefix = "file.storage", name = "type", havingValue = Constants.MINIO)
+//    public MinioConfig minioConfig() {
+//        return new MinioConfig();
+//    }
+//
+//    @Bean
+//    @ConditionalOnProperty(prefix = "file.storage", name = "type", havingValue = Constants.MONGO)
+//    public MongoConfig mongoConfig() {
+//        return new MongoConfig();
+//    }
+
 }

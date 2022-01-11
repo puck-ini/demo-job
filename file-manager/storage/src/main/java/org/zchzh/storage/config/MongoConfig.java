@@ -1,4 +1,4 @@
-package org.zchzh.file.config;
+package org.zchzh.storage.config;
 
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
@@ -9,16 +9,19 @@ import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSBuckets;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
-import org.zchzh.file.constants.Constants;
-import org.zchzh.file.service.StorageService;
-import org.zchzh.file.service.impl.MongoStorageServiceImpl;
+import org.zchzh.storage.annotation.ConditionOnStorageType;
+import org.zchzh.storage.properties.MongoProp;
+import org.zchzh.storage.properties.StorageProp;
+import org.zchzh.storage.service.StorageService;
+import org.zchzh.storage.service.impl.MongoStorageServiceImpl;
+import org.zchzh.storage.type.StorageType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,17 +33,17 @@ import java.util.Objects;
  */
 
 @Configuration
-@ConditionalOnProperty(prefix = "file.storage", name = "type", havingValue = Constants.MONGO)
+@ConditionOnStorageType(value = StorageType.MONGODB)
+@ConditionalOnMissingBean
 public class MongoConfig {
 
 
     /**
      * spring data mongo >= 2.3.0 弃用了 MongoFactory 改成了 MongoDatabaseFactory
      */
-//    private MongoDatabaseFactory mongoDatabaseFactory;
 
     @Bean
-    public MongoDatabaseFactory mongoDatabaseFactory(@Autowired StorageProp prop) {
+    public MongoDatabaseFactory mongoDatabaseFactory(@Autowired MongoProp prop) {
         List<ServerAddress> serverAddressList = new ArrayList<>();
 
         String[] replicaSet = prop.getUrl().split(",");

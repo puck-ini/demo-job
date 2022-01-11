@@ -1,4 +1,4 @@
-package org.zchzh.file.service.impl;
+package org.zchzh.storage.service.impl;
 
 import com.mongodb.client.gridfs.GridFSBucket;
 import com.mongodb.client.gridfs.GridFSDownloadStream;
@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.gridfs.GridFsCriteria;
 import org.springframework.data.mongodb.gridfs.GridFsResource;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
-import org.zchzh.file.service.StorageService;
+import org.zchzh.storage.service.StorageService;
 
 import java.io.IOException;
 import java.io.InputStream;

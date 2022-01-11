@@ -25,7 +25,7 @@
         <pg.version>42.2.18</pg.version>
         <swagger.version>3.0.0</swagger.version>
         <minio.version>8.0.1</minio.version>
-        <hutool.version>5.4.5</hutool.version>
+        <hutool.version>5.7.14</hutool.version>
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <jwt.version>0.11.2</jwt.version>
         <fastjson.version>1.2.75</fastjson.version>
