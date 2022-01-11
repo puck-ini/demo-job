@@ -30,6 +30,12 @@ class RoleServiceImplTest {
 
 
     @Test
+    public void get() {
+        log.info(roleService.get(10L).orElse(new Role()).toString());
+    }
+
+
+    @Test
     public void testAdd() {
         Role role = Role.builder().name("test").description("e123").build();
         Permission permission = Permission.builder()
