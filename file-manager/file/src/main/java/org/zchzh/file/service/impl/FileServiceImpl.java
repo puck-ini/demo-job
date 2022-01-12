@@ -71,9 +71,9 @@ public class FileServiceImpl implements FileService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public DemoFile upload(Long catalogId, DemoFile file) {
-        DemoFile demoFile = getCatalog(catalogId);
-        demoFile.getChildren().add(file);
-        demoFileRepo.save(demoFile);
+        DemoFile catalog = getCatalog(catalogId);
+        catalog.getChildren().add(file);
+        demoFileRepo.save(catalog);
         storageService.upload(file.getFullFileName(), file.getInputStream());
         return file;
     }

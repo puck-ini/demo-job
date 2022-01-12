@@ -1,6 +1,6 @@
 package org.zchzh.file.entity;
 
-import lombok.ToString;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -11,13 +11,9 @@ import java.util.Date;
  * @date 2021/5/4
  */
 
-@ToString
+@Data
 @MappedSuperclass
 public class BaseEntity implements Serializable {
-
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
 
     /**
      * 创建时间
@@ -59,38 +55,5 @@ public class BaseEntity implements Serializable {
     @PreRemove
     public void preRemove(){
         this.updateTime = new Date();
-    }
-
-//
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
     }
 }

@@ -26,6 +26,8 @@ import java.util.*;
 @NoArgsConstructor
 public class DemoFile extends BaseEntity {
 
+    private static final long serialVersionUID = -7878561560870996984L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -86,15 +88,6 @@ public class DemoFile extends BaseEntity {
         }
         return fileName + "." + suffix;
     }
-
-//    public synchronized Long getSize() {
-//        if (fileType == FileType.CATALOG) {
-//            for (DemoFile file : children) {
-//                size = (size == null ? 0 : size) + file.getSize();
-//            }
-//        }
-//        return size;
-//    }
 
     public InputStream getInputStream() {
         if (fileType == FileType.CATALOG) {
