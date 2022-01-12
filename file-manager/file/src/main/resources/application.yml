@@ -12,20 +12,12 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
-#  data:
-#    mongodb:
-#      host: 127.0.0.1
-#      port: 27017
-#      database: test
-#      authentication-database: admin
-#      username: admin
-#      password: admin
 server:
   port: 9091
 
 file:
   storage:
-    type: mongodb
-    path: classpath:mongodb.yml
+    type: default
+#    path: classpath:default.yml
 
 

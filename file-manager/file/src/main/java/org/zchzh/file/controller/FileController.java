@@ -71,7 +71,7 @@ public class FileController {
             CompletableFuture<DemoFile> future = CompletableFuture.supplyAsync(() -> fileService.upload(id, file));
             futureList.add(future);
         }
-        List<DemoFile> result =futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
+        List<DemoFile> result = futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
         log.info("cost : " + (System.currentTimeMillis() - start));
         return result;
     }

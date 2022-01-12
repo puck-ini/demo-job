@@ -11,13 +11,14 @@ public enum StorageType {
      */
     DEFAULT("classpath:default.yml"),
     /**
-     * mongodb 存储方式
-     */
-    MONGODB("classpath:mongodb.yml"),
-    /**
      * minio 存储方式
      */
-    MINIO("classpath:minio.yml");
+    MINIO("classpath:minio.yml"),
+    /**
+     * mongodb 存储方式
+     */
+    MONGODB("classpath:mongodb.yml");
+
 
 
     private final String path;
