@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.zchzh.storage.annotation.ConditionOnStorageType;
 import org.zchzh.storage.properties.MinioProp;
-import org.zchzh.storage.properties.StorageProp;
 import org.zchzh.storage.service.StorageService;
 import org.zchzh.storage.service.impl.MinioStorageServiceImpl;
 import org.zchzh.storage.type.StorageType;
@@ -23,14 +22,12 @@ import org.zchzh.storage.type.StorageType;
 @Slf4j
 @Configuration
 @ConditionOnStorageType(value = StorageType.MINIO)
-@ConditionalOnMissingBean(MinioConfig.class)
 public class MinioConfig {
-
-
 
     private static final String PREFIX = "http://";
 
     @Bean
+    @ConditionalOnMissingBean(MinioClient.class)
     public MinioClient minioClient(@Autowired MinioProp prop) throws Exception {
         String url = PREFIX + prop.getUrl();
         MinioClient minioClient = MinioClient.builder()

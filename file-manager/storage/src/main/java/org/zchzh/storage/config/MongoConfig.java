@@ -19,7 +19,6 @@ import org.springframework.data.mongodb.core.SimpleMongoClientDatabaseFactory;
 import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.zchzh.storage.annotation.ConditionOnStorageType;
 import org.zchzh.storage.properties.MongoProp;
-import org.zchzh.storage.properties.StorageProp;
 import org.zchzh.storage.service.StorageService;
 import org.zchzh.storage.service.impl.MongoStorageServiceImpl;
 import org.zchzh.storage.type.StorageType;
@@ -36,7 +35,6 @@ import java.util.Objects;
 @Slf4j
 @Configuration
 @ConditionOnStorageType(value = StorageType.MONGODB)
-@ConditionalOnMissingBean(MongoConfig.class)
 public class MongoConfig {
 
 
@@ -45,6 +43,7 @@ public class MongoConfig {
      */
 
     @Bean
+    @ConditionalOnMissingBean(MongoDatabaseFactory.class)
     public MongoDatabaseFactory mongoDatabaseFactory(@Autowired MongoProp prop) {
         List<ServerAddress> serverAddressList = new ArrayList<>();
 
