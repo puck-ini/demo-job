@@ -1,5 +1,6 @@
 package org.zchzh.storage.service.impl;
 
+import io.minio.RemoveObjectArgs;
 import org.zchzh.storage.properties.MinioProp;
 import org.zchzh.storage.properties.StorageProp;
 import org.zchzh.storage.service.StorageService;
@@ -49,5 +50,14 @@ public class MinioStorageServiceImpl implements StorageService {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public void remove(String fileName) {
+        try {
+            minioClient.removeObject(RemoveObjectArgs.builder().bucket(prop.getBucket()).object(fileName).build());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

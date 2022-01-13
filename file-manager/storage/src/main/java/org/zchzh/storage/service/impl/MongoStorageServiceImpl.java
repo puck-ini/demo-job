@@ -51,4 +51,10 @@ public class MongoStorageServiceImpl implements StorageService {
         }
         return is;
     }
+
+    @Override
+    public void remove(String fileName) {
+        Query query = new Query(GridFsCriteria.whereFilename().is(fileName));
+        gridFsTemplate.delete(query);
+    }
 }

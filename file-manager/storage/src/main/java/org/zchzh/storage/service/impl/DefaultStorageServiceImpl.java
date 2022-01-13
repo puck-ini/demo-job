@@ -50,4 +50,12 @@ public class DefaultStorageServiceImpl implements StorageService {
             throw new RuntimeException("获取文件流失败");
         }
     }
+
+    @Override
+    public void remove(String fileName) {
+        File file = new File(path + fileName);
+        if (file.exists()) {
+            file.delete();
+        }
+    }
 }

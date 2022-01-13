@@ -22,5 +22,11 @@ public interface StorageService {
      */
     InputStream getInputStream(String fileName);
 
+    /**
+     * 删除文件
+     * @param fileName 文件名
+     */
+    void remove(String fileName);
+
 
 }
