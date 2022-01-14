@@ -1,5 +1,5 @@
 url: 127.0.0.1:27017
-username: minioadmin
-password: minioadmin
+#username: minioadmin
+#password: minioadmin
 database: test
-authenticationDb: admin
+#authenticationDb: admin

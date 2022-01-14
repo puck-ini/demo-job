@@ -18,13 +18,12 @@ import org.zchzh.file.exception.CommonException;
  * @date 2021/5/14
  */
 @Slf4j
-@RestControllerAdvice(basePackages = {"org.zchzh.filemanager.controller"})
+@RestControllerAdvice(basePackages = {"org.zchzh.file.controller"})
 public class ResponseControllerAdvice implements ResponseBodyAdvice<Object> {
 
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
         return !(methodParameter.getParameterType().equals(ResultDTO.class));
-//                || methodParameter.hasMethodAnnotation(RemoveWrapper.class));
     }
 
     @Override

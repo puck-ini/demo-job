@@ -48,7 +48,7 @@ public class PropAutoConfig {
     }
 
 
-    private  <T> T load(String path, Class<T> type) {
+    private <T> T load(String path, Class<T> type) {
         InputStream in = null;
         try {
             in = new FileInputStream(ResourceUtils.getFile(path));

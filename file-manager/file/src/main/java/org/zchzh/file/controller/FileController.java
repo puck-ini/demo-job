@@ -4,13 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.zchzh.file.entity.DemoFile;
-import org.zchzh.file.service.FileService;
+import org.zchzh.file.entity.BaseFile;
+import org.zchzh.file.entity.FileFactory;
+import org.zchzh.file.entity.Folder;
+import org.zchzh.file.service.FileManager;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
+
 
 /**
  * @author zengchzh
@@ -22,62 +22,46 @@ import java.util.stream.Collectors;
 @RequestMapping("/file")
 public class FileController {
 
+
     @Autowired
-    private FileService fileService;
+    private FileManager fileManager;
 
-    @GetMapping("/catalog")
-    public DemoFile getCatalog(@RequestParam("id") Long id) {
-        return fileService.getCatalog(id);
+
+    @GetMapping("/{id}")
+    public BaseFile get(@PathVariable("id") Long id) {
+        return fileManager.get(id);
     }
 
-    @GetMapping
-    public DemoFile getFile(@RequestParam("id") Long id) {
-        return fileService.getFile(id);
-    }
-
-    @PostMapping("/create/catalog")
-    public DemoFile createCatalog(@RequestParam("catalogId") Long id,
-                           @RequestParam("fileName") String fileName) {
-        return fileService.addCatalog(id, fileName);
-    }
-
-    @PostMapping("/create/root")
-    public DemoFile createRoot(@RequestParam("fileName") String fileName) {
-        return fileService.createRoot(fileName);
+    @PostMapping("/folder")
+    public BaseFile create(@RequestParam("fileName") String fileName,
+                           @RequestParam(value = "folderId", required = false) Long folderId) {
+        Folder folder = FileFactory.getFile(fileName, Folder.class);
+        folder.setFolderId(folderId);
+        return fileManager.create(folder);
     }
 
     @PostMapping("/upload")
-    public DemoFile upload(@RequestParam("catalogId") Long id,
+    public BaseFile upload(@RequestParam("folderId") Long folderId,
                            @RequestPart("file") MultipartFile file) {
-        return fileService.upload(id, file);
+        BaseFile baseFile = FileFactory.getFile(file);
+        baseFile.setFolderId(folderId);
+        return fileManager.upload(baseFile);
     }
 
-    @PostMapping("/batch/upload")
-    public List<DemoFile> batchUpload(@RequestParam("catalogId") Long id,
-                                      @RequestPart("file") MultipartFile[] files) {
-        long start  = System.currentTimeMillis();
-        List<DemoFile> result = fileService.batchUpload(id, files);
-        log.info("cost : " + (System.currentTimeMillis() - start));
-        return result;
+    @GetMapping("/download/{id}")
+    public void download(@PathVariable("id") Long id) {
+        fileManager.download(id);
     }
 
-    @Deprecated
-    @PostMapping("/async/upload")
-    public List<DemoFile> asyncUpload(@RequestParam("catalogId") Long id,
-                                      @RequestPart("file") MultipartFile[] files) {
-        long start  = System.currentTimeMillis();
-        List<CompletableFuture<DemoFile>> futureList = new ArrayList<>();
-        for (MultipartFile file : files) {
-            CompletableFuture<DemoFile> future = CompletableFuture.supplyAsync(() -> fileService.upload(id, file));
-            futureList.add(future);
-        }
-        List<DemoFile> result = futureList.stream().map(CompletableFuture::join).collect(Collectors.toList());
-        log.info("cost : " + (System.currentTimeMillis() - start));
-        return result;
+
+    @DeleteMapping
+    public void remove(@RequestParam("id") Long id) {
+        fileManager.remove(id);
     }
 
-    @GetMapping("/download")
-    public void download(@RequestParam("fileId") Long id) {
-        fileService.download(id);
+    @GetMapping("/list")
+    public List<BaseFile> list() {
+        return fileManager.list();
     }
+
 }

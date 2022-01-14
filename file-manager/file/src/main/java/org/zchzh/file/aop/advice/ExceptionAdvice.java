@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 
 @Slf4j
-@RestControllerAdvice(basePackages = {"org.zchzh.filemanager.controller"})
+@RestControllerAdvice(basePackages = {"org.zchzh.file.controller"})
 public class ExceptionAdvice {
 
 
