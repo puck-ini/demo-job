@@ -18,7 +18,7 @@
     <modules>
         <module>file-manager</module>
         <module>demo-rbac</module>
-        <module>short-link</module>
+        <module>short-url</module>
     </modules>
 
     <properties>
