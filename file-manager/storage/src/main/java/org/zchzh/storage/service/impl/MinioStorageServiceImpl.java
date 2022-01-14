@@ -28,11 +28,11 @@ public class MinioStorageServiceImpl implements StorageService {
 
     @Override
     public void upload(String fileName, InputStream is) {
-        try {
+        try (InputStream inputStream = is){
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(prop.getBucket())
                     .object(fileName)
-                    .stream(is, is.available(), -1)
+                    .stream(inputStream, inputStream.available(), -1)
                     .build());
         } catch (Exception e) {
             e.printStackTrace();

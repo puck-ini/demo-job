@@ -29,7 +29,8 @@ public class DefaultStorageServiceImpl implements StorageService {
     @Override
     public void upload(String fileName, InputStream is) {
         File file = new File(path + fileName);
-        try (FileChannel source = ((FileInputStream) is).getChannel();
+        try (InputStream inputStream = is;
+             FileChannel source = ((FileInputStream) inputStream).getChannel();
              FileChannel target = new RandomAccessFile(file, "rw").getChannel()) {
             source.transferTo(0, source.size(), target);
         } catch (IOException e) {

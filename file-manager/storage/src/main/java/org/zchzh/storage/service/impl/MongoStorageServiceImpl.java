@@ -32,7 +32,11 @@ public class MongoStorageServiceImpl implements StorageService {
 
     @Override
     public void upload(String fileName, InputStream is) {
-        gridFsTemplate.store(is, fileName);
+        try (InputStream inputStream = is){
+            gridFsTemplate.store(inputStream, fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
