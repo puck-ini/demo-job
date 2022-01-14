@@ -41,9 +41,6 @@ public class FolderServiceImpl implements FileService<Folder> {
     private FolderRepo folderRepo;
 
     @Autowired
-    private BaseFileRepo fileRepo;
-
-    @Autowired
     private StorageService storageService;
 
     @Resource

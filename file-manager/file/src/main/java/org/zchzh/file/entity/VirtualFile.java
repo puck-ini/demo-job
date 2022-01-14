@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.zchzh.file.util.MD5Util;
 import org.zchzh.file.util.SpringApplicationContextUtil;
 import org.zchzh.storage.service.StorageService;
 
@@ -37,19 +38,12 @@ public class VirtualFile extends BaseFile {
     @Transient
     private InputStream inputStream;
 
-    @Transient
-    private Folder folder;
-
     @Override
     public String getFileName() {
         return super.getFileName() + "." + suffix;
     }
 
     public InputStream getInputStream() {
-        if (Objects.isNull(inputStream)) {
-            inputStream = SpringApplicationContextUtil.getBean(StorageService.class).getInputStream(getFileName());
-            return inputStream;
-        }
-        return inputStream;
+        return SpringApplicationContextUtil.getBean(StorageService.class).getInputStream(getFileName());
     }
 }

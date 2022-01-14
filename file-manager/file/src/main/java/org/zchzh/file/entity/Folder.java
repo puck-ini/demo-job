@@ -3,16 +3,11 @@ package org.zchzh.file.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.springframework.util.CollectionUtils;
 import org.zchzh.file.repository.BaseFileRepo;
-import org.zchzh.file.service.impl.FolderServiceImpl;
 import org.zchzh.file.util.SpringApplicationContextUtil;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,10 +22,6 @@ import java.util.Objects;
 public class Folder extends BaseFile {
 
     private static final long serialVersionUID = 807907644892853657L;
-
-
-    @Transient
-    private Folder folder;
 
     @Transient
     private List<? extends BaseFile> fileList;

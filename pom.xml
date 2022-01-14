@@ -29,6 +29,7 @@
         <mapstruct.version>1.4.2.Final</mapstruct.version>
         <jwt.version>0.11.2</jwt.version>
         <fastjson.version>1.2.75</fastjson.version>
+        <common-io.version>2.11.0</common-io.version>
     </properties>
 
     <dependencyManagement>
@@ -83,6 +84,12 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${fastjson.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>commons-io</groupId>
+                <artifactId>commons-io</artifactId>
+                <version>${common-io.version}</version>
             </dependency>
 
         </dependencies>

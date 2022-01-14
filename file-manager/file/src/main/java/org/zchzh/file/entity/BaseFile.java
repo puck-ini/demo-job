@@ -3,7 +3,6 @@ package org.zchzh.file.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -28,6 +27,9 @@ public class BaseFile implements Serializable {
 
     private Long folderId;
 
+    @Transient
+    private Folder folder;
+
     /**
      * 创建时间
      */
@@ -45,6 +47,9 @@ public class BaseFile implements Serializable {
      */
     @Version
     private Integer version;
+
+
+    public static final String TEMP_DIR = System.getProperty("java.io.tmpdir");
 
     /**
      * 在实体保存到数据库之前执行的操作
