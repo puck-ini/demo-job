@@ -5,7 +5,7 @@ import cn.hutool.cache.CacheUtil;
 import cn.hutool.core.date.DateUnit;
 import org.springframework.stereotype.Service;
 import org.zchzh.shorturl.entity.UrlMap;
-import org.zchzh.shorturl.service.CacheService;
+import org.zchzh.shorturl.service.UrlMapCache;
 
 /**
  * @author zchzh
@@ -13,7 +13,7 @@ import org.zchzh.shorturl.service.CacheService;
  */
 
 @Service
-public class LocalCacheServiceImpl implements CacheService {
+public class LocalUrlMapCacheImpl implements UrlMapCache {
 
     private static final Cache<String, UrlMap> CACHE = CacheUtil.newLRUCache(100);
 

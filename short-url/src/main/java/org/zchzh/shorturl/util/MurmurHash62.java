@@ -29,8 +29,4 @@ public class MurmurHash62 {
         }
         return sb.reverse().toString();
     }
-
-    public static void main(String[] args) {
-        System.out.println(hash("test"));
-    }
 }

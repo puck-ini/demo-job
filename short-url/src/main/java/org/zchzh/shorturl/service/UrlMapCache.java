@@ -6,7 +6,7 @@ import org.zchzh.shorturl.entity.UrlMap;
  * @author zchzh
  * @date 2022/1/15
  */
-public interface CacheService {
+public interface UrlMapCache {
 
 
     UrlMap get(String key);

@@ -9,27 +9,29 @@ import org.zchzh.shorturl.entity.UrlMap;
 
 @Slf4j
 @SpringBootTest
-class ShortUrlServiceTest {
+class UrlMapServiceTest {
 
     @Autowired
-    private ShortUrlService shortUrlService;
+    private UrlMapService urlMapService;
 
 
     @Test
     void getShort() {
-      log.info(shortUrlService.getShortUrl("https://www.bookstack.cn/read/hutool/2dac05593c1166ad.md"));
+      log.info(urlMapService.getShortUrl("https://www.bookstack.cn/read/hutool/2dac05593c1166ad.md"));
+      log.info(urlMapService.getShortUrl("https://www.bookstack.cn/read/hutool/2dac05593c1166ad.md"));
     }
 
 
     @Test
     void getLong() {
-        log.info(shortUrlService.getLongUrl("1D5JSi"));
+        log.info(urlMapService.getLongUrl("1D5JSi"));
 
     }
 
     @Test
     void create() {
         log.info(UrlMap.create("https://www.bookstack.cn/read/hutool/2dac05593c1166ad.md").toString());
+
     }
 
 }
