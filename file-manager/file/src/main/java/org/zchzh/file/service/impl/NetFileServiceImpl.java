@@ -57,7 +57,7 @@ public class NetFileServiceImpl implements FileService<NetFile> {
             }
         }
         NetFile sFile = netFileRepo.save(file);
-        storageService.upload(sFile.getFileName(), sFile.getInputStream());
+        storageService.save(sFile.getFileName(), sFile.getInputStream());
         return sFile;
     }
 
@@ -78,7 +78,7 @@ public class NetFileServiceImpl implements FileService<NetFile> {
                 @Cleanup OutputStream os = response.getOutputStream();
                 //获取数据
                 @Cleanup InputStream is = file.getInputStream();
-                IOUtils.copy(is,os);
+                IOUtils.copy(is, os);
                 os.flush();
             } catch (IOException e) {
                 log.error("download error", e);

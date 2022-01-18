@@ -5,14 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zchzh.file.entity.BaseFile;
 import org.zchzh.file.entity.Folder;
 import org.zchzh.file.entity.VirtualFile;
 import org.zchzh.file.exception.CommonException;
 import org.zchzh.file.repository.BaseFileRepo;
-import org.zchzh.file.repository.FolderRepo;
 import org.zchzh.file.repository.VirtualFileRepo;
 import org.zchzh.file.service.FileService;
 import org.zchzh.storage.service.StorageService;
@@ -68,7 +66,7 @@ public class VirtualFileServiceImpl implements FileService<VirtualFile> {
             throw new CommonException("上传到的文件不是一个文件夹");
         }
         VirtualFile newFile = virtualFileRepo.save(file);
-        storageService.upload(file.getFileName(), file.getInputStream());
+        storageService.save(file.getFileName(), file.getInputStream());
         return newFile;
     }
 
@@ -84,7 +82,7 @@ public class VirtualFileServiceImpl implements FileService<VirtualFile> {
                 @Cleanup OutputStream os = response.getOutputStream();
                 //获取数据
                 @Cleanup InputStream is = file.getInputStream();
-                IOUtils.copy(is,os);
+                IOUtils.copy(is, os);
                 os.flush();
             } catch (IOException e) {
                 log.error("download error", e);

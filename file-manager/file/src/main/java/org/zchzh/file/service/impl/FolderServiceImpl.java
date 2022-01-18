@@ -6,15 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.zchzh.file.entity.BaseFile;
 import org.zchzh.file.entity.Folder;
-import org.zchzh.file.entity.VirtualFile;
 import org.zchzh.file.exception.CommonException;
-import org.zchzh.file.repository.BaseFileRepo;
 import org.zchzh.file.repository.FolderRepo;
-import org.zchzh.file.repository.VirtualFileRepo;
 import org.zchzh.file.service.FileService;
 import org.zchzh.file.util.SpringApplicationContextUtil;
 import org.zchzh.storage.service.StorageService;
@@ -24,8 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.nio.channels.FileChannel;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -82,14 +76,13 @@ public class FolderServiceImpl implements FileService<Folder> {
             persistFile(folder, tempDir);
             String path = tempDir + folder.getFileName();
             String downloadName = URLEncoder.encode(folder.getFileName()+ ".zip","UTF-8");
-            log.info(downloadName);
             response.setHeader("Access-Control-Expose-Headers","Content-Disposition");
             response.setHeader("Content-Disposition",
                     "attachment;filename=" + downloadName + ";filename*=utf-8''" + downloadName);
             @Cleanup OutputStream os = response.getOutputStream();
             File zipFile = ZipUtil.zip(path);
             @Cleanup InputStream is = new FileInputStream(zipFile);
-            IOUtils.copy(is,os);
+            IOUtils.copy(is, os);
             os.flush();
         } catch (IOException e) {
             e.printStackTrace();

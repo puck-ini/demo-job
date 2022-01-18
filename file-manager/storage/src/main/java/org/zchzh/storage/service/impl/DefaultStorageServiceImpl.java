@@ -27,7 +27,7 @@ public class DefaultStorageServiceImpl implements StorageService {
     }
 
     @Override
-    public void upload(String fileName, InputStream is) {
+    public void save(String fileName, InputStream is) {
         File file = new File(path + fileName);
         try (InputStream inputStream = is;
              FileChannel source = ((FileInputStream) inputStream).getChannel();

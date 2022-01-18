@@ -22,7 +22,7 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-public class VirtualFile extends BaseFile {
+public class VirtualFile extends BaseFile implements StorageFile {
 
     private static final long serialVersionUID = -5472199178409502157L;
 
@@ -43,6 +43,7 @@ public class VirtualFile extends BaseFile {
         return super.getFileName() + "." + suffix;
     }
 
+    @Override
     public InputStream getInputStream() {
         return SpringApplicationContextUtil.getBean(StorageService.class).getInputStream(getFileName());
     }

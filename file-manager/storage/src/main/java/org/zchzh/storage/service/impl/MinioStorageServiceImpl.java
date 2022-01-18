@@ -27,7 +27,7 @@ public class MinioStorageServiceImpl implements StorageService {
     }
 
     @Override
-    public void upload(String fileName, InputStream is) {
+    public void save(String fileName, InputStream is) {
         try (InputStream inputStream = is){
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(prop.getBucket())

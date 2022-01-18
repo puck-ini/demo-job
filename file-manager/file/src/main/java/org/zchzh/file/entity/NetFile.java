@@ -22,7 +22,7 @@ import java.util.Objects;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Entity
-public class NetFile extends BaseFile {
+public class NetFile extends BaseFile implements StorageFile {
 
     private static final long serialVersionUID = -9134946242953224031L;
 
@@ -31,6 +31,7 @@ public class NetFile extends BaseFile {
     private String md5;
 
     @JsonIgnore
+    @Override
     public InputStream getInputStream() {
         InputStream inputStream = SpringApplicationContextUtil.getBean(StorageService.class).getInputStream(getFileName());
         if (Objects.isNull(inputStream)) {

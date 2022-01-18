@@ -9,11 +9,11 @@ import java.io.InputStream;
 public interface StorageService {
 
     /**
-     * 上传文件
+     * 保存文件
      * @param fileName 文件名
      * @param is 文件流
      */
-    void upload(String fileName, InputStream is);
+    void save(String fileName, InputStream is);
 
     /**
      * 通过文件名获取文件流
