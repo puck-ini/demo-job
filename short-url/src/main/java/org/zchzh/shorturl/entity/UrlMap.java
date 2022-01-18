@@ -4,6 +4,7 @@ import cn.hutool.core.lang.Validator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.zchzh.shorturl.repo.UrlMapRepo;
+import org.zchzh.shorturl.service.ShortUrlBloomFilter;
 import org.zchzh.shorturl.types.UrlState;
 import org.zchzh.shorturl.util.MurmurHash62;
 import org.zchzh.shorturl.util.SpringContextUtils;
@@ -28,7 +29,7 @@ public class UrlMap {
     @Column(unique = true)
     private String shortUrl;
 
-    private String originUrl;
+    private String longUrl;
 
     private LocalDateTime createTime;
 
@@ -43,7 +44,18 @@ public class UrlMap {
     public static UrlMap create(String longUrl) {
         checkUrl(longUrl);
         UrlMap urlMap = new UrlMap();
-        urlMap.setOriginUrl(longUrl);
+        urlMap.setLongUrl(longUrl);
+        urlMap.setVisitCount(0L);
+        urlMap.setState(UrlState.AVAILABLE);
+        urlMap.setTempUrl(longUrl);
+        urlMap.setShortUrl(MurmurHash62.hash(longUrl));
+        return urlMap;
+    }
+
+    public static UrlMap createWithUniqueShortUrl(String longUrl) {
+        checkUrl(longUrl);
+        UrlMap urlMap = new UrlMap();
+        urlMap.setLongUrl(longUrl);
         urlMap.setVisitCount(0L);
         urlMap.setState(UrlState.AVAILABLE);
         urlMap.setTempUrl(longUrl);
@@ -65,11 +77,13 @@ public class UrlMap {
 
     public void checkAndSetUniqueShortUrl() {
         this.shortUrl = MurmurHash62.hash(tempUrl);
-        UrlMap dbMap = SpringContextUtils.getBean(UrlMapRepo.class).findByShortUrl(this.shortUrl);
-        if (Objects.nonNull(dbMap)) {
-            if (!Objects.equals(dbMap.getOriginUrl(), this.originUrl)) {
-                this.tempUrl = this.tempUrl + REDUNDANCY;
-                this.checkAndSetUniqueShortUrl();
+        if (SpringContextUtils.getBean(ShortUrlBloomFilter.class).contains(this.shortUrl)) {
+            UrlMap dbMap = SpringContextUtils.getBean(UrlMapRepo.class).findByShortUrl(this.shortUrl);
+            if (Objects.nonNull(dbMap)) {
+                if (!Objects.equals(dbMap.getLongUrl(), this.longUrl)) {
+                    this.tempUrl = this.tempUrl + REDUNDANCY;
+                    this.checkAndSetUniqueShortUrl();
+                }
             }
         }
     }

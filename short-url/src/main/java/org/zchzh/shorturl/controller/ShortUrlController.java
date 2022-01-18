@@ -2,7 +2,7 @@ package org.zchzh.shorturl.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.zchzh.shorturl.service.ShortUrlService;
+import org.zchzh.shorturl.service.UrlMapService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -16,17 +16,17 @@ import java.io.IOException;
 public class ShortUrlController {
 
     @Autowired
-    private ShortUrlService shortUrlService;
+    private UrlMapService urlMapService;
 
     @PostMapping("/generate")
     public String generate(@RequestBody String longUrl) {
-        return shortUrlService.getShortUrl(longUrl);
+        return urlMapService.getShortUrl(longUrl);
     }
 
     @GetMapping("/{shortUrl}")
     public void redirectLongUrl(@PathVariable("shortUrl") String shortUrl,
                                 HttpServletResponse response) throws IOException {
         // 302 重定向
-        response.sendRedirect(shortUrlService.getLongUrl(shortUrl));
+        response.sendRedirect(urlMapService.getLongUrl(shortUrl));
     }
 }
