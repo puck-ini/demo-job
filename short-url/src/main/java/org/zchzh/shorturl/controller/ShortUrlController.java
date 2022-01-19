@@ -28,5 +28,15 @@ public class ShortUrlController {
                                 HttpServletResponse response) throws IOException {
         // 302 重定向
         response.sendRedirect(urlMapService.getLongUrl(shortUrl));
+
+        // 301 重定向
+//        response.setStatus(301);
+//        response.setHeader("Location", urlMapService.getLongUrl(shortUrl));
+    }
+
+    @PostMapping("/custom")
+    public String custom(@RequestParam String shortUrl,
+                         @RequestParam String longUrl) {
+        return urlMapService.custom(shortUrl, longUrl);
     }
 }
