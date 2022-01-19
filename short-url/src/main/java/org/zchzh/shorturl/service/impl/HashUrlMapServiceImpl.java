@@ -12,7 +12,9 @@ import org.zchzh.shorturl.util.MurmurHash62;
 
 import javax.annotation.PostConstruct;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.regex.Pattern;
 
 /**
  * @author zchzh
@@ -57,25 +59,6 @@ public class HashUrlMapServiceImpl implements UrlMapService {
         return urlMap.getShortUrl();
     }
 
-    @Override
-    public String getLongUrl(String shortUrl) {
-        UrlMap urlMap = getCache(shortUrl);
-        if (Objects.isNull(urlMap)) {
-            urlMap = urlMapRepo.findByShortUrl(shortUrl);
-        }
-        if (Objects.isNull(urlMap)) {
-            throw new IllegalArgumentException("[" + shortUrl + "]不存在");
-        }
-        UrlMap urlMap1 = urlMapRepo.findById(urlMap.getId()).orElseThrow(() -> new IllegalArgumentException(""));
-        CompletableFuture.runAsync(() -> {
-            synchronized (urlMap1) {
-                urlMap1.incrVisitCount();
-                urlMapRepo.save(urlMap1);
-            }
-        });
-        return urlMap.getLongUrl();
-    }
-
     public UrlMap getCache(String shortUrl) {
         UrlMap urlMap = urlMapCache.get(shortUrl);
         if (Objects.nonNull(urlMap)) {
@@ -95,6 +78,47 @@ public class HashUrlMapServiceImpl implements UrlMapService {
             bloomFilter.add(urlMap.getShortUrl());
         }
         return urlMap;
+    }
+
+    @Override
+    public String getLongUrl(String shortUrl) {
+        UrlMap urlMap = getCache(shortUrl);
+        if (Objects.isNull(urlMap)) {
+            urlMap = urlMapRepo.findByShortUrl(shortUrl);
+        }
+        if (Objects.isNull(urlMap)) {
+            throw new IllegalArgumentException("[" + shortUrl + "]不存在");
+        }
+        UrlMap urlMap1 = urlMapRepo.findById(urlMap.getId()).orElseThrow(() -> new IllegalArgumentException(""));
+        CompletableFuture.runAsync(() -> {
+            synchronized (urlMap1) {
+                urlMap1.incrVisitCount();
+                urlMapRepo.save(urlMap1);
+            }
+        });
+        return urlMap.getLongUrl();
+    }
+
+    @Override
+    public String custom(String shortUrl, String longUrl) {
+        checkShortUrl(shortUrl);
+        Optional.ofNullable(urlMapRepo.findByShortUrl(shortUrl)).ifPresent(urlMap -> {
+            throw new IllegalArgumentException("短链接[" + shortUrl + "]已存在");
+        });
+        UrlMap urlMap = UrlMap.create(longUrl);
+        urlMap.setShortUrl(shortUrl);
+        return urlMapRepo.save(urlMap).getShortUrl();
+    }
+
+    /**
+     * 大小写字母数字6-8个字符
+     */
+    private static final Pattern PATTERN = Pattern.compile("^[A-Za-z0-9]{6,8}$");
+
+    private void checkShortUrl(String shortUrl) {
+        if (!PATTERN.matcher(shortUrl).matches()) {
+            throw new IllegalArgumentException("大小写字母数字6-8个字符");
+        }
     }
 
 }

@@ -34,4 +34,9 @@ class UrlMapServiceTest {
 
     }
 
+    @Test
+    void custom() {
+        log.info(urlMapService.custom("1D5JSi86", "https://www.bookstack.cn/read/hutool/2dac05593c1166ad.md"));
+    }
+
 }
