@@ -5,6 +5,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
+import java.util.EventObject;
+
 /**
  * @author zchzh
  * @date 2022/1/15
@@ -21,5 +23,10 @@ public class SpringContextUtils implements ApplicationContextAware {
 
     public static <T> T getBean(Class<T> clazz) {
         return context.getBean(clazz);
+    }
+
+
+    public static void pushEvent(EventObject eventObject) {
+        context.publishEvent(eventObject);
     }
 }

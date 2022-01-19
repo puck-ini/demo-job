@@ -4,7 +4,7 @@ import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
 import cn.hutool.core.date.DateUnit;
 import org.springframework.stereotype.Service;
-import org.zchzh.shorturl.entity.UrlMap;
+import org.zchzh.shorturl.model.entity.UrlMap;
 import org.zchzh.shorturl.service.UrlMapCache;
 
 /**

@@ -3,12 +3,14 @@ package org.zchzh.shorturl.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.zchzh.shorturl.entity.UrlMap;
+import org.zchzh.shorturl.model.entity.UrlMap;
+import org.zchzh.shorturl.model.event.IncrVisitCountEvent;
 import org.zchzh.shorturl.repo.UrlMapRepo;
 import org.zchzh.shorturl.service.ShortUrlBloomFilter;
 import org.zchzh.shorturl.service.UrlMapCache;
 import org.zchzh.shorturl.service.UrlMapService;
 import org.zchzh.shorturl.util.MurmurHash62;
+import org.zchzh.shorturl.util.SpringContextUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.Objects;
@@ -89,13 +91,7 @@ public class HashUrlMapServiceImpl implements UrlMapService {
         if (Objects.isNull(urlMap)) {
             throw new IllegalArgumentException("[" + shortUrl + "]不存在");
         }
-        UrlMap urlMap1 = urlMapRepo.findById(urlMap.getId()).orElseThrow(() -> new IllegalArgumentException(""));
-        CompletableFuture.runAsync(() -> {
-            synchronized (urlMap1) {
-                urlMap1.incrVisitCount();
-                urlMapRepo.save(urlMap1);
-            }
-        });
+        SpringContextUtils.pushEvent(new IncrVisitCountEvent(this, urlMap.getId()));
         return urlMap.getLongUrl();
     }
 

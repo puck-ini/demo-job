@@ -1,4 +1,4 @@
-package org.zchzh.shorturl.entity;
+package org.zchzh.shorturl.model.entity;
 
 import cn.hutool.core.lang.Validator;
 import com.fasterxml.jackson.annotation.JsonIgnore;

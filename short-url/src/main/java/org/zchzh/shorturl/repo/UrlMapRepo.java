@@ -1,7 +1,7 @@
 package org.zchzh.shorturl.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.zchzh.shorturl.entity.UrlMap;
+import org.zchzh.shorturl.model.entity.UrlMap;
 
 /**
  * @author zchzh

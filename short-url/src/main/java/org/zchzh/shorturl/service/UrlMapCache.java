@@ -1,6 +1,6 @@
 package org.zchzh.shorturl.service;
 
-import org.zchzh.shorturl.entity.UrlMap;
+import org.zchzh.shorturl.model.entity.UrlMap;
 
 /**
  * @author zchzh
