@@ -53,9 +53,14 @@ public class IncrVisitCountEventListener {
                     e.printStackTrace();
                 }
                 if (Objects.nonNull(event)) {
+                    IncrVisitCountEvent finalEvent = event;
                     urlMapRepo.findById(event.getId()).ifPresent(urlMap -> {
                         urlMap.incrVisitCount();
-                        urlMapRepo.save(urlMap);
+                        try {
+                            urlMapRepo.save(urlMap);
+                        } catch (Exception e) {
+                            pushEvent(finalEvent);
+                        }
                     });
                 }
             }

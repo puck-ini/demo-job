@@ -37,6 +37,9 @@ public class UrlMap {
 
     private UrlState state;
 
+    @Version
+    private Long version;
+
     @Transient
     @JsonIgnore
     private String tempUrl;
