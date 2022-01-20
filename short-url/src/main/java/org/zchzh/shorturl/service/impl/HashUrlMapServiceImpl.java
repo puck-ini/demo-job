@@ -2,20 +2,21 @@ package org.zchzh.shorturl.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.zchzh.shorturl.model.entity.UrlMap;
 import org.zchzh.shorturl.model.event.IncrVisitCountEvent;
 import org.zchzh.shorturl.repo.UrlMapRepo;
 import org.zchzh.shorturl.service.ShortUrlBloomFilter;
+import org.zchzh.shorturl.util.ShortUrlBuilder;
 import org.zchzh.shorturl.service.UrlMapCache;
 import org.zchzh.shorturl.service.UrlMapService;
-import org.zchzh.shorturl.util.MurmurHash62;
 import org.zchzh.shorturl.util.SpringContextUtils;
 
 import javax.annotation.PostConstruct;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
 import java.util.regex.Pattern;
 
 /**
@@ -24,7 +25,8 @@ import java.util.regex.Pattern;
  */
 
 @Slf4j
-@Service
+@Component
+@ConditionalOnProperty(prefix = "short-url", name = "service", havingValue = "hash")
 public class HashUrlMapServiceImpl implements UrlMapService {
 
     @Autowired
@@ -36,6 +38,9 @@ public class HashUrlMapServiceImpl implements UrlMapService {
     @Autowired
     private ShortUrlBloomFilter bloomFilter;
 
+    @Autowired
+    private ShortUrlBuilder builder;
+
 
     @PostConstruct
     public void initCacheAndBloomFilter() {
@@ -46,7 +51,7 @@ public class HashUrlMapServiceImpl implements UrlMapService {
 
     @Override
     public String getShortUrl(String longUrl) {
-        String shortUrl = MurmurHash62.hash(longUrl);
+        String shortUrl =builder.hash(longUrl);
         UrlMap urlMap;
         if (bloomFilter.contains(shortUrl)) {
             urlMap = getCache(shortUrl);
@@ -54,7 +59,7 @@ public class HashUrlMapServiceImpl implements UrlMapService {
                 urlMap = getDbIfNullCreate(shortUrl, longUrl);
             }
         } else {
-            urlMap = UrlMap.create(longUrl);
+            urlMap = UrlMap.create(shortUrl, longUrl);
             urlMapRepo.save(urlMap);
             urlMapCache.put(shortUrl, urlMap);
         }
@@ -101,8 +106,7 @@ public class HashUrlMapServiceImpl implements UrlMapService {
         Optional.ofNullable(urlMapRepo.findByShortUrl(shortUrl)).ifPresent(urlMap -> {
             throw new IllegalArgumentException("短链接[" + shortUrl + "]已存在");
         });
-        UrlMap urlMap = UrlMap.create(longUrl);
-        urlMap.setShortUrl(shortUrl);
+        UrlMap urlMap = UrlMap.create(shortUrl, longUrl);
         return urlMapRepo.save(urlMap).getShortUrl();
     }
 

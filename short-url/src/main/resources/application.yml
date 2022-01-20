@@ -20,3 +20,6 @@ spring:
         web-allow-others: false
 server:
   port: 9091
+
+short-url:
+  service: hash

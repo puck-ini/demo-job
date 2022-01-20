@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.zchzh.shorturl.repo.UrlMapRepo;
 import org.zchzh.shorturl.service.ShortUrlBloomFilter;
-import org.zchzh.shorturl.types.UrlState;
-import org.zchzh.shorturl.util.MurmurHash62;
+import org.zchzh.shorturl.util.ShortUrlBuilder;
+import org.zchzh.shorturl.model.types.UrlState;
 import org.zchzh.shorturl.util.SpringContextUtils;
 
 import javax.persistence.*;
@@ -44,14 +44,14 @@ public class UrlMap {
     @JsonIgnore
     private String tempUrl;
 
-    public static UrlMap create(String longUrl) {
+    public static UrlMap create(String shortUrl, String longUrl) {
         checkUrl(longUrl);
         UrlMap urlMap = new UrlMap();
         urlMap.setLongUrl(longUrl);
         urlMap.setVisitCount(0L);
         urlMap.setState(UrlState.AVAILABLE);
         urlMap.setTempUrl(longUrl);
-        urlMap.setShortUrl(MurmurHash62.hash(longUrl));
+        urlMap.setShortUrl(shortUrl);
         return urlMap;
     }
 
@@ -79,7 +79,7 @@ public class UrlMap {
     private static final String REDUNDANCY = "redundancy";
 
     public void checkAndSetUniqueShortUrl() {
-        this.shortUrl = MurmurHash62.hash(tempUrl);
+        this.shortUrl = SpringContextUtils.getBean(ShortUrlBuilder.class).hash(tempUrl);
         if (SpringContextUtils.getBean(ShortUrlBloomFilter.class).contains(this.shortUrl)) {
             UrlMap dbMap = SpringContextUtils.getBean(UrlMapRepo.class).findByShortUrl(this.shortUrl);
             if (Objects.nonNull(dbMap)) {

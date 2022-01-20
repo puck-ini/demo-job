@@ -1,7 +1,5 @@
 package org.zchzh.shorturl.model.event;
 
-import lombok.Data;
-
 import java.util.EventObject;
 
 /**

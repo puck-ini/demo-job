@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.zchzh.shorturl.service.UrlMapService;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -15,7 +16,7 @@ import java.io.IOException;
 @RestController
 public class ShortUrlController {
 
-    @Autowired
+    @Resource
     private UrlMapService urlMapService;
 
     @PostMapping("/generate")

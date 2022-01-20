@@ -1,4 +1,4 @@
-package org.zchzh.shorturl.types;
+package org.zchzh.shorturl.model.types;
 
 /**
  * @author zchzh
