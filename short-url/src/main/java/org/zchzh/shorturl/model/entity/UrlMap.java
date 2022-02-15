@@ -35,6 +35,7 @@ public class UrlMap {
 
     private Long visitCount;
 
+    @Enumerated(EnumType.STRING)
     private UrlState state;
 
     @Version
@@ -83,10 +84,8 @@ public class UrlMap {
         if (SpringContextUtils.getBean(ShortUrlBloomFilter.class).contains(this.shortUrl)) {
             UrlMap dbMap = SpringContextUtils.getBean(UrlMapRepo.class).findByShortUrl(this.shortUrl);
             if (Objects.nonNull(dbMap)) {
-                if (!Objects.equals(dbMap.getLongUrl(), this.longUrl)) {
-                    this.tempUrl = this.tempUrl + REDUNDANCY;
-                    this.checkAndSetUniqueShortUrl();
-                }
+                this.tempUrl = this.tempUrl + REDUNDANCY;
+                this.checkAndSetUniqueShortUrl();
             }
         }
     }
@@ -97,4 +96,12 @@ public class UrlMap {
         this.createTime = LocalDateTime.now();
     }
 
+
+    public void changeState(UrlState state) {
+        this.state = state;
+    }
+
+    public boolean isAvailable() {
+        return this.state == UrlState.AVAILABLE;
+    }
 }

@@ -45,4 +45,20 @@ class UrlMapServiceTest {
         log.info(urlMapService.custom("1D5JSi86", "https://www.bookstack.cn/read/hutool/2dac05593c1166ad.md"));
     }
 
+
+
+    @Test
+    void invalidHash() {
+        getShort();
+        urlMapService.invalid("1D5JSi");
+        getShort();
+    }
+
+    @Test
+    void invalidIncr() {
+        getShort();
+        urlMapService.invalid("1");
+        getShort();
+    }
+
 }

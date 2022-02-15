@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.zchzh.shorturl.model.entity.UrlMap;
 import org.zchzh.shorturl.model.event.IncrVisitCountEvent;
+import org.zchzh.shorturl.model.types.UrlState;
 import org.zchzh.shorturl.repo.UrlMapRepo;
 import org.zchzh.shorturl.service.ShortUrlBloomFilter;
 import org.zchzh.shorturl.util.ShortUrlBuilder;
@@ -17,6 +18,7 @@ import org.zchzh.shorturl.util.SpringContextUtils;
 import javax.annotation.PostConstruct;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
 /**
@@ -49,9 +51,14 @@ public class HashUrlMapServiceImpl implements UrlMapService {
         });
     }
 
+    /**
+     * TODO 如何在上一个短链接失效后下一个该长链接生成的短链接在失效之前每次获取都不会新创建。
+     * @param longUrl 长链接
+     * @return
+     */
     @Override
     public String getShortUrl(String longUrl) {
-        String shortUrl =builder.hash(longUrl);
+        String shortUrl = builder.hash(longUrl);
         UrlMap urlMap;
         if (bloomFilter.contains(shortUrl)) {
             urlMap = getCache(shortUrl);
@@ -62,6 +69,7 @@ public class HashUrlMapServiceImpl implements UrlMapService {
             urlMap = UrlMap.create(shortUrl, longUrl);
             urlMapRepo.save(urlMap);
             urlMapCache.put(shortUrl, urlMap);
+            bloomFilter.add(shortUrl);
         }
         return urlMap.getShortUrl();
     }
@@ -75,7 +83,7 @@ public class HashUrlMapServiceImpl implements UrlMapService {
     }
 
     public UrlMap getDbIfNullCreate(String shortUrl, String longUrl) {
-        UrlMap urlMap = urlMapRepo.findByShortUrl(shortUrl);
+        UrlMap urlMap = urlMapRepo.findByShortUrlAndState(shortUrl, UrlState.AVAILABLE);
         if (Objects.nonNull(urlMap) && Objects.equals(urlMap.getLongUrl(), longUrl)) {
             urlMapCache.put(shortUrl, urlMap);
         } else {
@@ -91,7 +99,7 @@ public class HashUrlMapServiceImpl implements UrlMapService {
     public String getLongUrl(String shortUrl) {
         UrlMap urlMap = getCache(shortUrl);
         if (Objects.isNull(urlMap)) {
-            urlMap = urlMapRepo.findByShortUrl(shortUrl);
+            urlMap = urlMapRepo.findByShortUrlAndState(shortUrl, UrlState.AVAILABLE);
         }
         if (Objects.isNull(urlMap)) {
             throw new IllegalArgumentException("[" + shortUrl + "]不存在");
@@ -108,6 +116,15 @@ public class HashUrlMapServiceImpl implements UrlMapService {
         });
         UrlMap urlMap = UrlMap.create(shortUrl, longUrl);
         return urlMapRepo.save(urlMap).getShortUrl();
+    }
+
+    @Override
+    public void invalid(String shortUrl) {
+        Optional.ofNullable(urlMapRepo.findByShortUrlAndState(shortUrl, UrlState.AVAILABLE)).ifPresent(urlMap -> {
+            urlMap.changeState(UrlState.INVALID);
+            urlMapRepo.save(urlMap);
+            urlMapCache.remove(shortUrl);
+        });
     }
 
     /**

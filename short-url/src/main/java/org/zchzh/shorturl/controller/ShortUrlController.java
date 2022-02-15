@@ -40,4 +40,9 @@ public class ShortUrlController {
                          @RequestParam String longUrl) {
         return urlMapService.custom(shortUrl, longUrl);
     }
+
+    @PutMapping("/invalid")
+    public void invalid(@RequestBody String shortUrl) {
+        urlMapService.invalid(shortUrl);
+    }
 }

@@ -29,4 +29,11 @@ public interface UrlMapCache {
      */
     void put(String key, UrlMap value);
 
+    /**
+     * 移除 UrlMap
+     * @param key 键值
+     * @return 返回缓存对象
+     */
+    UrlMap remove(String key);
+
 }

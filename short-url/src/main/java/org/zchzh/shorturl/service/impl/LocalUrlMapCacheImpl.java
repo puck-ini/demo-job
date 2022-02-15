@@ -31,4 +31,11 @@ public class LocalUrlMapCacheImpl implements UrlMapCache {
     public void put(String key, UrlMap value) {
         CACHE.put(key, value, DateUnit.MINUTE.getMillis() * 10);
     }
+
+    @Override
+    public UrlMap remove(String key) {
+        UrlMap urlMap = get(key);
+        CACHE.remove(key);
+        return urlMap;
+    }
 }

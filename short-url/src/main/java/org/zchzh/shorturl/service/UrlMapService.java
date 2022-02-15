@@ -28,4 +28,7 @@ public interface UrlMapService {
      */
     String custom(String shortUrl, String longUrl);
 
+
+    void invalid(String shortUrl);
+
 }
