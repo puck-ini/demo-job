@@ -19,6 +19,7 @@ import org.zchzh.rbac.util.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author zengchzh
@@ -46,7 +47,10 @@ public class UserServiceImpl extends AbstractCrudService<MyUser, Long> implement
     public LoginDTO login(LoginReq req, HttpServletRequest request) {
         filterChain.check(new LoginContext(req, request.getRemoteAddr(), context));
         MyUser user = userRepo.findByUsername(req.getUsername());
-        String token = JwtUtil.getToken(new HashMap<>(), user.getUsername());
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", user.getId());
+        claims.put("username", user.getUsername());
+        String token = JwtUtil.getToken(claims, user.getUsername());
         LoginDTO dto = UserConvert.INSTANCE.toLoginDto(user);;
         dto.setToken(token);
         return dto;
