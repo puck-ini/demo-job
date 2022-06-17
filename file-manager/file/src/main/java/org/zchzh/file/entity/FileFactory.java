@@ -21,12 +21,13 @@ public class FileFactory {
             virtualFile.setSuffix(virtualFile.getOriginName().substring(virtualFile.getOriginName().lastIndexOf(".") + 1));
         }
         virtualFile.setSize(file.getSize());
+        virtualFile.setContentType(file.getContentType());
         try {
             virtualFile.setInputStream(file.getInputStream());
+            virtualFile.setMd5(MD5Util.getMd5(file.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        virtualFile.setMd5(MD5Util.getMd5(virtualFile.getInputStream()));
         return virtualFile;
     }
 

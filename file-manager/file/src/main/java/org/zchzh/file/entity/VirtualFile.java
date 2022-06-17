@@ -34,6 +34,8 @@ public class VirtualFile extends BaseFile implements StorageFile {
 
     private String md5;
 
+    private String contentType;
+
     @JsonIgnore
     @Transient
     private InputStream inputStream;
@@ -45,6 +47,10 @@ public class VirtualFile extends BaseFile implements StorageFile {
 
     @Override
     public InputStream getInputStream() {
-        return SpringApplicationContextUtil.getBean(StorageService.class).getInputStream(getFileName());
+        if (Objects.isNull(inputStream)) {
+            inputStream = SpringApplicationContextUtil.getBean(StorageService.class).getInputStream(getFileName());
+            return inputStream;
+        }
+        return inputStream;
     }
 }

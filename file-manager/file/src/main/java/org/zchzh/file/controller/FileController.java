@@ -1,15 +1,25 @@
 package org.zchzh.file.controller;
 
+import lombok.Cleanup;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.zchzh.file.entity.BaseFile;
 import org.zchzh.file.entity.FileFactory;
 import org.zchzh.file.entity.Folder;
+import org.zchzh.file.entity.VirtualFile;
+import org.zchzh.file.model.Range;
 import org.zchzh.file.service.FileManager;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -62,6 +72,17 @@ public class FileController {
     @GetMapping("/list")
     public List<BaseFile> list() {
         return fileManager.list();
+    }
+
+
+    @PostMapping("/upload/chunk")
+    public void uploadChunk(HttpServletRequest request, HttpServletResponse response, @RequestParam("folderId") Long folderId) {
+        fileManager.uploadChunk(request, response, folderId);
+    }
+
+    @GetMapping("/download/chunk")
+    public void downloadChunk(HttpServletRequest request, HttpServletResponse response, @RequestParam("id") Long id) {
+        fileManager.downloadChunk(request, response, id);
     }
 
 }
